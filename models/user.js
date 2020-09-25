@@ -13,7 +13,7 @@ const UserSchema = new Schema({
     unique: true,
     required: true,
   },
-  name: {
+  fullname: {
     type: String,
     required: true,
   },
@@ -37,6 +37,6 @@ UserSchema.methods.validatePassword = function (password) {
 };
 
 const User = mongoose.model("User", UserSchema);
-User.ensureIndexes();
+User.createIndexes();
 
 module.exports = User;

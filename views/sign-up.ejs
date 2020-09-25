@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/stylesheets/index.css" />
+<div class="wrapper fade-in-down">
+  <div id="form-content">
+    <!-- Signin Form -->
+    <form class="container" action="/sign-up" method="post">
+      <input
+        type="email"
+        id="signin"
+        class="fade-in-down"
+        name="email"
+        placeholder="Email"
+      />
+      <input
+        type="text"
+        id="fullname"
+        class="fade-in-down"
+        name="fullname"
+        placeholder="Full Name"
+      />
+      <input
+        type="password"
+        id="password"
+        class="fade-in-down"
+        name="password"
+        placeholder="Password"
+      />
+      <input
+        class="form-btn"
+        type="submit"
+        class="fade-in-down"
+        value="Sign Up"
+      />
+    </form>
+    <% if (error) { %>
+    <p class="error"><%- error %></p>
+    <% } %>
+    <!-- Cancel -->
+    <div id="form-footer">
+      <a class="footer-link" href="../">Cancel</a>
+    </div>
+  </div>
+</div>

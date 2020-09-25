@@ -3,7 +3,7 @@ const { Mongoose } = require("mongoose");
 var mongoose = require("mongoose");
 
 var uri = "mongodb://localhost:27017/fitness-db";
-mongoose.connect(uri);
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const gracefulShutdown = (msg, callback) => {
   mongoose.connection.close(() => {
