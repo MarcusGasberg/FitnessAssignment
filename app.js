@@ -6,15 +6,24 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+<<<<<<< HEAD
 var  programRouter = require("./routes/programs");
+=======
+var signUpRouter = require("./routes/sign-up");
+var signInRouter = require("./routes/sign-in");
+>>>>>>> e0fbd206dfb59e79ea2bac43064f35a2a0332e35
 var mongoose = require("mongoose");
 var db = require("./models/fitness-db");
+var partials = require("express-partials");
+
+partials.register(".ejs", "ejs");
 
 var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(partials());
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -24,13 +33,21 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+<<<<<<< HEAD
 app.use("/programs", programRouter);
+=======
+app.use("/sign-up", signUpRouter);
+app.use("/sign-in", signInRouter);
+>>>>>>> e0fbd206dfb59e79ea2bac43064f35a2a0332e35
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
+app.use(function (req, res, next) {
+  next(createError(400));
+});
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
