@@ -1,10 +1,10 @@
 const mongoose = require("mongoose"),
-    Schema = mongoose.Schema;
-const exercise = require("../models/exercise"),
+    exercise = require("../models/exercise"),
+    Schema = mongoose.Schema,
     ExerciseSchema = exercise.ExerciseSchema;
 
 const ProgramSchema = new Schema({
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     exercises: [ExerciseSchema]
 });
 

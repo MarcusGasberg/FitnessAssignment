@@ -4,9 +4,13 @@ var programController = require("../controllers/programController");
 
 router.get("/", programController.list);
 
-router.get("/new", programController.create);
-router.post("/new", programController.add);
+router.get("/find", programController.find);
+router.post("/find", programController.show);
 
+router.get("/new", programController.add);
+router.post("/new", programController.create);
+
+router.get("/edit/:name", programController.edit)
 router.post("/edit", programController.update);
 
 module.exports = router;

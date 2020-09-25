@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1 class="h1">Programs</h1>
+        <br />
+        <% programs.forEach(program => { %>
+        <table class="table table-bordered table-striped">
+            <caption><%= program.name %></caption>
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Exercise
+                        <a href="/programs/edit/<%=program.name%>"> +</a>
+                    </th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Sets</th>
+                    <th scope="col">Repetitions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% program.exercises.forEach(exercise => { %>
+                <tr>
+                    <td><%= exercise.name %> </td>
+                    <td><%= exercise.description %></td>
+                    <td><%= exercise.sets %></td>
+                    <td><%= exercise.repetitions %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <br />
+        <% }) %>
+</body>
+</div>
+
+</html>
