@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= title %></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h3><%= title %></h3>
+  <p>Enter program name</p>
+  <form action="/programs/new" method="POST" id="fprogram">
+    <label for="fname">Name:</label>
+    <input type="text" id="fname" name="fname" autofocus=true required><br /><br />
+    <br />
+    <input type="submit" value="Add">
+  </form>
+</body>
+
+</html>

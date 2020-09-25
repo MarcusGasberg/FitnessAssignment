@@ -1,0 +1,25 @@
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h3><%= title %></h3>
+    <p>Add exercises to <%= programName %> </p>
+    <form action="/programs/edit/" method="POST">
+        <label for="fexName">Name:</label>
+        <input type="text" id="fexName" name="fexName" required><br/>
+        <label for="fexDesc">Description:</label>
+        <input type="text" id="fexDesc" name="fexDesc"><br/>
+        <label for="fexSets">Sets:</label>
+        <input type="number" id="fexSets" name="fexSets"><br/>
+        <label for="fexReps">Repetitions:</label>
+        <input type="number" id="fexReps" name="fexReps">
+        <input type="text" hidden="true" id="fname" name="fname" value="<%= programName %>">
+        <input type="submit" value="Add">
+    </form>
+    <br/>
+    <a href="/programs/">Done</a>
+</body>
+
+</html>
