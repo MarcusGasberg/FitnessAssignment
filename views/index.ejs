@@ -15,7 +15,11 @@
   <div class="container h-100">
     <div class="d-flex h-100 text-center align-items-center">
       <div class="w-100 text-white">
-        <h1 class="display-3">Reach for the top</h1>
+        <h1 class="display-3">
+          Reach for the top <% if (locals.user) { %>
+          <p><%- locals.user.fullname %></p>
+          <% } %>
+        </h1>
         <p class="lead mb-0">With FitnessApp</p>
       </div>
     </div>

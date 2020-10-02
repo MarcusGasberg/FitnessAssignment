@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const mongoose = require("mongoose");
-const User = require("../models/user");
 
 router.get("/", function (req, res, next) {
   res.render("sign-in", { title: "Sign In", layout: "layout.ejs", error: "" });

@@ -9,8 +9,7 @@ if (process.env.NODE_ENV === "production") {
 
 var mongoOptions = {
   useNewUrlParser: true,
-  ssl: true,
-  authSource: "admin",
+  ssl: process.env.NODE_ENV === "production",
   retryWrites: true,
   useUnifiedTopology: true,
   keepAlive: 300000,
