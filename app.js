@@ -3,10 +3,11 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var dotenv = require("dotenv");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var  programRouter = require("./routes/programs");
+var programRouter = require("./routes/programs");
 var signUpRouter = require("./routes/sign-up");
 var signInRouter = require("./routes/sign-in");
 var mongoose = require("mongoose");
@@ -14,6 +15,8 @@ var db = require("./models/fitness-db");
 var partials = require("express-partials");
 
 partials.register(".ejs", "ejs");
+
+dotenv.config();
 
 var app = express();
 
@@ -34,6 +37,11 @@ app.use("/users", usersRouter);
 app.use("/programs", programRouter);
 app.use("/sign-up", signUpRouter);
 app.use("/sign-in", signInRouter);
+app.use(function (err, req, res, next) {
+  if (err.name === "UnauthorizedError") {
+    res.redirect("./sign-in");
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

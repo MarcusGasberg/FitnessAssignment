@@ -15,11 +15,13 @@ router.post("/", async function (req, res, next) {
     const pwd = "" + req.body.password;
     const valid = u.validatePassword(pwd);
     if (valid) {
+      const accessToken = u.generateJwt();
+      res.cookie("jwt", accessToken, { secure: true, httpOnly: true });
       res.redirect("../");
     }
+  } else {
+    handleLoginError(res, "Wrong Password or Email");
   }
-
-  handleLoginError(res, "Wrong Password or Email");
 });
 
 function handleLoginError(res, msg) {
