@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
 
 const iterations = 90000;
@@ -34,6 +35,24 @@ UserSchema.methods.validatePassword = function (password) {
     .toString("hex");
 
   return this.hash === hash;
+};
+
+UserSchema.methods.generateJwt = function () {
+  const weekMs = 7 * 24 * 60 * 60 * 1000;
+  let expires = new Date().getTime() + weekMs;
+
+  return jwt.sign(
+    {
+      _id: this._id,
+      email: this.email,
+      fullname: this.fullname,
+      exp: expires,
+    },
+    process.env.JWT_SECRET,
+    {
+      algorithm: "HS256",
+    }
+  );
 };
 
 const User = mongoose.model("User", UserSchema);

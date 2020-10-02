@@ -3,7 +3,31 @@ const { Mongoose } = require("mongoose");
 var mongoose = require("mongoose");
 
 var uri = "mongodb://localhost:27017/fitness-db";
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+if (process.env.NODE_ENV === "production") {
+  uri = process.env.MONGODB_URI;
+}
+
+var mongoOptions = {
+  useNewUrlParser: true,
+  ssl: true,
+  authSource: "admin",
+  retryWrites: true,
+  useUnifiedTopology: true,
+  server: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+    },
+  },
+  replset: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+    },
+  },
+};
+
+mongoose.connect(uri, mongoOptions).catch((err) => console.log(err));
 
 const gracefulShutdown = (msg, callback) => {
   mongoose.connection.close(() => {

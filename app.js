@@ -1,3 +1,4 @@
+require("dotenv").config();
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -6,7 +7,7 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var  programRouter = require("./routes/programs");
+var programRouter = require("./routes/programs");
 var signUpRouter = require("./routes/sign-up");
 var signInRouter = require("./routes/sign-in");
 var mongoose = require("mongoose");
@@ -34,6 +35,11 @@ app.use("/users", usersRouter);
 app.use("/programs", programRouter);
 app.use("/sign-up", signUpRouter);
 app.use("/sign-in", signInRouter);
+app.use(function (err, req, res, next) {
+  if (err.name === "UnauthorizedError") {
+    res.redirect("./sign-in");
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
