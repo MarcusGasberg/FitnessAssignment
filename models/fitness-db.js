@@ -7,7 +7,9 @@ if (process.env.NODE_ENV === "production") {
   uri = process.env.MONGODB_URI;
 }
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .catch((err) => console.log(err));
 
 const gracefulShutdown = (msg, callback) => {
   mongoose.connection.close(() => {
