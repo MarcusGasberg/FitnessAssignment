@@ -2,15 +2,19 @@ const express = require("express");
 var router = express.Router();
 var programController = require("../controllers/programController");
 
-router.get("/", programController.list);
+router.route("/")
+    .get(programController.list)
+    .post(programController.create);
 
-router.get("/find", programController.find);
-router.post("/find", programController.show);
+router.route("/program")
+    .get(programController.find)
+    .post(programController.show);
 
-router.get("/new", programController.add);
-router.post("/new", programController.create);
+router.route("/:name/program")
+    .get(programController.edit)
+    .post(programController.update);
 
-router.get("/edit/:name", programController.edit)
-router.post("/edit", programController.update);
+router.route("/program/new")
+    .get(programController.add);
 
 module.exports = router;

@@ -7,7 +7,7 @@
 
 <body>
     <div class="wrapper">
-        <h1 class="h1">Programs</h1>
+        <h1 class="h1"><%= title %> </h1>
         <br />
         <% programs.forEach(program => { %>
         <table class="table table-bordered table-striped">
@@ -16,11 +16,11 @@
                 <tr>
                     <th scope="col">
                         Exercise
-                        <a href="/programs/edit/<%=program.name%>"> +</a>
+                        <a href="/programs/<%=program.name%>/program"> +</a>
                     </th>
                     <th scope="col">Description</th>
                     <th scope="col">Sets</th>
-                    <th scope="col">Repetitions</th>
+                    <th scope="col">Reps/Time</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +29,7 @@
                     <td><%= exercise.name %> </td>
                     <td><%= exercise.description %></td>
                     <td><%= exercise.sets %></td>
-                    <td><%= exercise.repetitions %></td>
+                    <td><%= exercise.repsOrTime %></td>
                 </tr>
                 <% }) %>
             </tbody>

@@ -5,7 +5,7 @@ const ExerciseSchema = new Schema({
     name: String,
     description: String,
     sets: Number,
-    repetitions: Number
+    repsOrTime: Schema.Types.Mixed
 });
 
 const Exercise = mongoose.model("Exercise", ExerciseSchema);

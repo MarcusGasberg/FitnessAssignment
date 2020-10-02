@@ -10,24 +10,35 @@ async function list(req, res) {
 
         console.log(`Fetched ${programs.length} programs`);
 
-        res.render("list", { programs: programs });
+        res.render("list", {
+            title: "Programs",
+            programs: programs
+        });
     } catch (err) {
         console.log(err);
+        handleError(err, res);
     }
 }
 
 function find(req, res) {
-    res.render("find");
+    res.render("find", { error: "" });
 }
 
 async function show(req, res) {
     try {
         let program = await Program.findOne({ name: req.body.fname }).exec();
 
-        if (program) res.render("list", {programs: [program] });
-
-    } catch(err) {
+        if (program) {
+            res.render("list", {
+                title: "Program",
+                programs: [program]
+            });
+        } else {
+            res.render("find", { error: "Program does not exist "});
+        }
+    } catch (err) {
         console.log(err);
+        handleError(err, res);
     }
 }
 
@@ -46,6 +57,7 @@ async function create(req, res) {
         res.render("edit", { programName: program.name });
     } catch (err) {
         console.log(err);
+        handleError(err, res);
     }
 }
 
@@ -60,7 +72,7 @@ async function update(req, res) {
             name: req.body.fname,
             description: req.body.fdesc,
             sets: req.body.fsets,
-            repetitions: req.body.freps
+            repsOrTime: req.body.frepsOrTime
         });
 
         let program = await Program.findOne({ name: programName }).exec();
@@ -71,7 +83,12 @@ async function update(req, res) {
         res.render("edit", { programName: programName });
     } catch (err) {
         console.log(err);
+        handleError(err, res);
     }
+}
+
+function handleError(res, err) {
+    return res.status(400).send({ message: err });
 }
 
 module.exports = {
