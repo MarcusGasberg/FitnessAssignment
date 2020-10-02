@@ -4,7 +4,12 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 
 router.get("/", function (req, res, next) {
-  res.render("sign-up", { title: "Sign Up", layout: "layout.ejs", error: "" });
+  res.render("sign-up", {
+    title: "Sign Up",
+    layout: "layout.ejs",
+    error: "",
+    user: req.user,
+  });
 });
 
 router.post("/", async function (req, res, next) {

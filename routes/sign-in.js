@@ -3,7 +3,12 @@ var router = express.Router();
 const mongoose = require("mongoose");
 
 router.get("/", function (req, res, next) {
-  res.render("sign-in", { title: "Sign In", layout: "layout.ejs", error: "" });
+  res.render("sign-in", {
+    title: "Sign In",
+    layout: "layout.ejs",
+    error: "",
+    user: req.user,
+  });
 });
 
 router.post("/", async function (req, res, next) {
@@ -24,7 +29,7 @@ router.post("/", async function (req, res, next) {
 });
 
 function handleLoginError(res, msg) {
-  res.render("sign-in", { error: msg });
+  res.render("sign-in", { error: msg, user: req.user });
 }
 
 module.exports = router;

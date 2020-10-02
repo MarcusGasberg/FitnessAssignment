@@ -13,6 +13,7 @@ var signInRouter = require("./routes/sign-in");
 var mongoose = require("mongoose");
 var db = require("./models/fitness-db");
 var partials = require("express-partials");
+var jwt = require("jsonwebtoken");
 
 partials.register(".ejs", "ejs");
 
@@ -29,6 +30,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
+
+app.use(async function (req, res, next) {
+  if (req.cookies.jwt) {
+    try {
+      var decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+    } catch (e) {
+      return;
+    }
+
+    const User = mongoose.model("User");
+    const user = await User.findOne({ _id: decoded._id });
+    req.user = user;
+  }
+  next();
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
