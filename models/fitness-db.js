@@ -7,9 +7,15 @@ if (process.env.NODE_ENV === "production") {
   uri = process.env.MONGODB_URI;
 }
 
-mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .catch((err) => console.log(err));
+var mongoOptions = {
+  useNewUrlParser: true,
+  ssl: true,
+  authSource: "admin",
+  retryWrites: true,
+  useUnifiedTopology: true,
+};
+
+mongoose.connect(uri, mongoOptions).catch((err) => console.log(err));
 
 const gracefulShutdown = (msg, callback) => {
   mongoose.connection.close(() => {
