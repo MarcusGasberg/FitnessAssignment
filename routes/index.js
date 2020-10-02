@@ -10,7 +10,7 @@ var auth = jwt({
 
 /* GET home page. */
 router.get("/", auth, function (req, res, next) {
-  res.render("index", { title: "Express", layout: "layout.ejs" });
+  res.render("index", { title: "FitnessApp", layout: "layout.ejs" });
 });
 
 module.exports = router;
