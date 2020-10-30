@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { User } from './models/user';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +36,18 @@ export class AuthService {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUser$.next(user);
           return user;
+        })
+      );
+  }
+
+  register(user: User): Observable<User> {
+    return this.http
+      .post<any>(`${environment.apiUrl}/users/register`, user)
+      .pipe(
+        map((result: User) => {
+          localStorage.setItem('currentUser', JSON.stringify(result));
+          this.currentUser$.next(result);
+          return result;
         })
       );
   }

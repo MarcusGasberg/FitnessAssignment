@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../models/user';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
 })
-export class LoginComponent {
-  loginForm = this.fb.group({
+export class RegisterComponent {
+  addressForm = this.fb.group({
+    fullname: [null, Validators.required],
+    email: [null, [Validators.required, Validators.email]],
     username: [null, Validators.required],
     password: [null, Validators.required],
   });
@@ -21,10 +24,8 @@ export class LoginComponent {
   ) {}
 
   onSubmit(): void {
-    const username = this.loginForm.controls.username.value;
-    const password = this.loginForm.controls.password.value;
     this.authService
-      .login(username, password)
-      .subscribe(() => this.router.navigate(['']));
+      .register(this.addressForm.value as User)
+      .subscribe({ next: () => this.router.navigate(['home']) });
   }
 }
