@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../models/user';
 
@@ -26,6 +27,6 @@ export class RegisterComponent {
   onSubmit(): void {
     this.authService
       .register(this.addressForm.value as User)
-      .subscribe({ next: () => this.router.navigate(['home']) });
+      .subscribe({ next: (_) => this.router.navigate(['']) });
   }
 }
