@@ -1,0 +1,25 @@
+mat-card {
+  margin: 35px;
+  height: 75vh;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.program-card-content {
+  text-align: center;
+}
+
+.card-container {
+  height: calc(100vh - 64px)!important;
+  min-height: calc(100vh - 64px)!important;
+}
+
+.spacer {
+  margin: auto;
+}
+

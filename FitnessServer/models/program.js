@@ -5,6 +5,7 @@ const mongoose = require("mongoose"),
 
 const ProgramSchema = new Schema({
     name: { type: String, required: true, unique: true },
+    userName: {type: String, required: true },
     exercises: [ExerciseSchema]
 });
 

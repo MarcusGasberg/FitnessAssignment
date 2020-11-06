@@ -1,6 +1,5 @@
-<div *ngFor="let program of programs" fxLayout="column" fxLayoutAlign="space-around stretch" class="program">
-  <table mat-table [dataSource]="program.exercises" class="mat-elevation-z1">
-    <caption>{{program.name}}</caption>
+<div fxLayout="column">
+  <table mat-table [dataSource]="program.exercises" class="mat-elevation-z0">
 
     <ng-container matColumnDef="exercise">
       <th mat-header-cell *matHeaderCellDef> Exercise</th>

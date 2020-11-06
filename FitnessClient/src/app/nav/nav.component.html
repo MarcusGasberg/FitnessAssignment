@@ -12,6 +12,8 @@
       </div>
       <ng-template #loggedIn>
         <a mat-list-item (click)="logout()">Logout</a>
+        <a mat-list-item routerLink="/programs">All programs</a>
+        <a mat-list-item routerLink="/myPrograms">My programs</a>
       </ng-template>
     </mat-nav-list>
   </mat-sidenav>
