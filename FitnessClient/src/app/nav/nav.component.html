@@ -8,6 +8,7 @@
       <div *ngIf="!(isLoggedIn$ | async);else loggedIn">
         <a mat-list-item routerLink="/login">Login</a>
         <a mat-list-item routerLink="/register">Register</a>
+        <a mat-list-item routerLink="/programs">Programs</a>
       </div>
       <ng-template #loggedIn>
         <a mat-list-item (click)="logout()">Logout</a>

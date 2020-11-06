@@ -20,9 +20,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
+import { AllProgramsComponent } from './all-programs/all-programs.component';
+import { MatTableModule } from "@angular/material/table";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavComponent, RegisterComponent, HomeComponent],
+  declarations: [AppComponent, LoginComponent, NavComponent, RegisterComponent, HomeComponent, AllProgramsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -39,6 +42,8 @@ import { HomeComponent } from './home/home.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatTableModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent],

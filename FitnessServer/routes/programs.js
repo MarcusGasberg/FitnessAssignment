@@ -5,7 +5,7 @@ var auth = require("../auth");
 
 router
   .route("/")
-  .get(auth, programController.list)
+  .get(programController.list)
   .post(auth, programController.create);
 
 router
