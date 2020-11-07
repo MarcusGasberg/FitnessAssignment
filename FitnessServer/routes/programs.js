@@ -14,8 +14,8 @@ router
   .post(auth, programController.show);
 
 router
-  .route("/:name/program")
-  .get(auth, programController.edit)
+  .route("/:username/programs")
+  .get(programController.listByUsername)
   .post(auth, programController.update);
 
 router.route("/program/new").get(programController.add);

@@ -6,15 +6,32 @@ const mongoose = require("mongoose"),
 function list(req, res) {
     Program.find({}).exec((err, programs) => {
         if (err) {
-            return res
-                .status(500)
-                .json({
-                    message: `Error fetching programs: ${err.message}`
-                });
+            return res.status(500).json({
+                message: `Error fetching programs: ${err.message}`
+            });
         } else {
             return res.status(200).json(programs);
         }
     });
+}
+
+function listByUsername(req, res, next) {
+    let username = req.params.username;
+    console.log("username: " + username);
+    if (!username) {
+        res.status(400).json({ message: "Username required"});
+        next();
+    }
+
+    Program.find({userName: username}).exec((err, programs) => {
+        if (err) {
+            return res.status(500).json({
+                message: `Error fetching programs for ${username}: ${err.message}`
+            });
+        } else {
+            return res.status(200).json(programs);
+        }
+    })
 }
 
 function find(req, res) {
@@ -122,6 +139,7 @@ function handleError(res, err) {
 
 module.exports = {
     list: list,
+    listByUsername: listByUsername,
     find: find,
     show: show,
     add: add,

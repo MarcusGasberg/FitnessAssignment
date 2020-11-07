@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProgramService} from "../shared/program.service";
 import {Program} from "../models/program";
-import {map} from "rxjs/operators";
+import {filter, map} from "rxjs/operators";
 import {AuthService} from "../auth/auth.service";
 
 @Component({
@@ -14,20 +14,16 @@ export class MyProgramsComponent implements OnInit {
   programs: Program[];
   selectedProgram: Program;
 
-  constructor(private programService: ProgramService,
-              private authService: AuthService) {
+  constructor(private programService: ProgramService) {
   }
 
   ngOnInit(): void {
-    this.programService.getPrograms()
-      .pipe(map(programs =>
-        programs.filter(program =>
-          program.userName === this.authService.currentUserValue.username)))
-      .subscribe((programs: Program[]) => {
+    this.programService
+      .getUserPrograms()
+      .pipe(filter((programs: Program[]) => programs?.length > 0))
+      .subscribe(programs => {
         this.programs = programs;
-        if (this.programs.length > 0) {
-          this.selectedProgram = this.programs[0];
-        }
+        this.setSelectedProgram(programs[0]);
       });
   }
 
