@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ProgramService} from "../shared/program.service";
 import {Program} from "../models/program";
-import {filter} from "rxjs/operators";
+import {filter, find, map} from "rxjs/operators";
 import {CreateProgramDialogComponent} from "../create-program-dialog/create-program-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Observable} from "rxjs";
+import {CreateExerciseDialogComponent} from "../create-exercise-dialog/create-exercise-dialog.component";
+import {Exercise} from "../models/exercise";
 
 @Component({
   selector: 'app-my-programs',
@@ -25,10 +27,10 @@ export class MyProgramsComponent implements OnInit {
   }
 
   getMyPrograms(): void {
-    this.programs$ = this.programService.getByUsername();
+    this.programs$ = this.programService.getProgramsByUsername();
   }
 
-  setSelectedProgram(program: Program): void {
+  onSelectedProgram(program: Program): void {
     this.selectedProgram = program;
   }
 
@@ -43,8 +45,32 @@ export class MyProgramsComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe((result: Program) => {
       if (result) {
-        this.programService.add(result.name, result.username)
+        this.programService.addProgram(result.name, result.username)
           .subscribe(_ => this.getMyPrograms());
+      }
+    });
+  }
+
+  addExercise(): void {
+    const dialogOptions = {
+      width: '24rem',
+      height: '32rem',
+    };
+    const dialogRef = this.dialog.open(
+      CreateExerciseDialogComponent,
+      dialogOptions
+    );
+    dialogRef.afterClosed().subscribe((result: Exercise) => {
+      if (result) {
+        this.programService.addExercise(this.selectedProgram._id, result)
+          .subscribe(_ => {
+            this.programService.getProgramsByUsername().pipe(
+              map(programs => programs.find(program => program._id === this.selectedProgram._id)))
+              .subscribe(program => {
+                this.selectedProgram = program;
+                this.getMyPrograms();
+              })
+          });
       }
     });
   }

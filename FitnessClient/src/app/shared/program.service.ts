@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Program} from "../models/program";
 import {AuthService} from "../auth/auth.service";
+import {Exercise} from "../models/exercise";
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +15,27 @@ export class ProgramService {
               private authService: AuthService) {
   }
 
-  get(): Observable<Program[]> {
-    return this.http.get<Program[]>(`${environment.apiUrl}/api/programs/`);
+  getPrograms(): Observable<Program[]> {
+    return this.http.get<Program[]>(`${environment.apiUrl}/api/programs`);
   }
 
-  getByUsername(): Observable<Program[]> {
-    return this.http.get<Program[]>(`${environment.apiUrl}/api/programs/${this.authService.currentUserValue.username}/programs`);
+  getProgramsByUsername(): Observable<Program[]> {
+    return this.http.get<Program[]>(`${environment.apiUrl}/api/programs/${this.authService.currentUserValue.username}`);
   }
 
-  add(programName: string, username: string): Observable<Program> {
-    return this.http.post<Program>(`${environment.apiUrl}/api/programs/`, {
+  addProgram(programName: string, username: string): Observable<Program> {
+    return this.http.post<Program>(`${environment.apiUrl}/api/programs`, {
       name: programName,
       username: username
+    });
+  }
+
+  addExercise(programId: string, exercise: Exercise): Observable<Exercise> {
+    return this.http.post<Exercise>(`${environment.apiUrl}/api/programs/${programId}/exercises`, {
+      name: exercise.name,
+      description: exercise.description,
+      sets: exercise.sets,
+      repsOrTime: exercise.repsOrTime
     });
   }
 }

@@ -29,9 +29,10 @@ import { ProgramDetailsComponent } from './program-details/program-details.compo
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { CreateProgramDialogComponent } from './create-program-dialog/create-program-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
+import { CreateExerciseDialogComponent } from './create-exercise-dialog/create-exercise-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavComponent, RegisterComponent, HomeComponent, AllProgramsComponent, MyProgramsComponent, ProgramListComponent, ProgramDetailsComponent, CreateProgramDialogComponent],
+  declarations: [AppComponent, LoginComponent, NavComponent, RegisterComponent, HomeComponent, AllProgramsComponent, MyProgramsComponent, ProgramListComponent, ProgramDetailsComponent, CreateProgramDialogComponent, CreateExerciseDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

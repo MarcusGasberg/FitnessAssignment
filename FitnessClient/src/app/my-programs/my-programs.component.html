@@ -10,7 +10,7 @@
     <mat-card-content class="program-card-content">
       <app-program-list
         [myPrograms]="programs$ | async"
-        (selected)="setSelectedProgram($event)">
+        (selected)="onSelectedProgram($event)">
       </app-program-list>
     </mat-card-content>
   </mat-card>
@@ -18,7 +18,7 @@
     <mat-card-header class="header">
       <mat-card-title>Exercises</mat-card-title>
       <span class="spacer"></span>
-      <button mat-icon-button matTooltip="Create exercise">
+      <button mat-icon-button matTooltip="Create exercise" (click)="addExercise()">
         <mat-icon>add</mat-icon>
       </button>
     </mat-card-header>

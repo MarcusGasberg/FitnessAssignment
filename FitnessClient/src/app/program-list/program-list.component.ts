@@ -11,7 +11,7 @@ export class ProgramListComponent implements OnInit {
 
   @Input() myPrograms: Program[];
   @Output() selected = new EventEmitter<Program>();
-  selectedProgramName: string;
+  selectedProgramId: string;
 
   constructor() {
   }
@@ -20,7 +20,7 @@ export class ProgramListComponent implements OnInit {
   }
 
   onSelected(program: Program): void {
-    this.selectedProgramName = program.name;
+    this.selectedProgramId = program._id;
     this.selected.emit(program);
   }
 }

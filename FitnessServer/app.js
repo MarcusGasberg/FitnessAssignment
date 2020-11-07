@@ -56,7 +56,7 @@ app.use(async function (req, res, next) {
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/api/programs", programRouter);
+app.use("/api", programRouter);
 app.use("/sign-up", signUpRouter);
 app.use("/sign-in", signInRouter);
 

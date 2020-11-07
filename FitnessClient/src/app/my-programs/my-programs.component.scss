@@ -1,6 +1,7 @@
 mat-card {
   margin: 35px;
   height: 75vh;
+  overflow-y: auto;
 }
 
 .header {
@@ -17,6 +18,7 @@ mat-card {
 .card-container {
   height: calc(100vh - 64px)!important;
   min-height: calc(100vh - 64px)!important;
+  overflow-y: auto;
 }
 
 .spacer {
