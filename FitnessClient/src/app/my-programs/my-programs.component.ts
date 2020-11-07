@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ProgramService} from "../shared/program.service";
 import {Program} from "../models/program";
-import {filter, map} from "rxjs/operators";
-import {AuthService} from "../auth/auth.service";
+import {filter} from "rxjs/operators";
+import {CreateProgramDialogComponent} from "../create-program-dialog/create-program-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-my-programs',
@@ -11,23 +13,39 @@ import {AuthService} from "../auth/auth.service";
 })
 export class MyProgramsComponent implements OnInit {
 
-  programs: Program[];
+  programs$: Observable<Program[]>;
   selectedProgram: Program;
 
-  constructor(private programService: ProgramService) {
+  constructor(private dialog: MatDialog,
+              private programService: ProgramService) {
   }
 
   ngOnInit(): void {
-    this.programService
-      .getUserPrograms()
-      .pipe(filter((programs: Program[]) => programs?.length > 0))
-      .subscribe(programs => {
-        this.programs = programs;
-        this.setSelectedProgram(programs[0]);
-      });
+    this.getMyPrograms();
+  }
+
+  getMyPrograms(): void {
+    this.programs$ = this.programService.getByUsername();
   }
 
   setSelectedProgram(program: Program): void {
     this.selectedProgram = program;
+  }
+
+  addProgram(): void {
+    const dialogOptions = {
+      width: '24rem',
+      height: '16rem',
+    };
+    const dialogRef = this.dialog.open(
+      CreateProgramDialogComponent,
+      dialogOptions
+    );
+    dialogRef.afterClosed().subscribe((result: Program) => {
+      if (result) {
+        this.programService.add(result.name, result.username)
+          .subscribe(_ => this.getMyPrograms());
+      }
+    });
   }
 }

@@ -27,9 +27,11 @@ import { MyProgramsComponent } from './my-programs/my-programs.component';
 import { ProgramListComponent } from './program-list/program-list.component';
 import { ProgramDetailsComponent } from './program-details/program-details.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import { CreateProgramDialogComponent } from './create-program-dialog/create-program-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavComponent, RegisterComponent, HomeComponent, AllProgramsComponent, MyProgramsComponent, ProgramListComponent, ProgramDetailsComponent],
+  declarations: [AppComponent, LoginComponent, NavComponent, RegisterComponent, HomeComponent, AllProgramsComponent, MyProgramsComponent, ProgramListComponent, ProgramDetailsComponent, CreateProgramDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -48,7 +50,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatListModule,
     MatTableModule,
     FlexLayoutModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],

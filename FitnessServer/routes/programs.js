@@ -6,18 +6,15 @@ var auth = require("../auth");
 router
   .route("/")
   .get(programController.list)
-  .post(auth, programController.create);
+  .post(programController.create);
 
 router
   .route("/program")
-  .get(auth, programController.find)
   .post(auth, programController.show);
 
 router
   .route("/:username/programs")
   .get(programController.listByUsername)
   .post(auth, programController.update);
-
-router.route("/program/new").get(programController.add);
 
 module.exports = router;

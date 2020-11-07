@@ -11,12 +11,16 @@ export class ProgramListComponent implements OnInit {
 
   @Input() myPrograms: Program[];
   @Output() selected = new EventEmitter<Program>();
+  selectedProgramName: string;
 
-  constructor() { }
+  constructor() {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   onSelected(program: Program): void {
+    this.selectedProgramName = program.name;
     this.selected.emit(program);
   }
 }

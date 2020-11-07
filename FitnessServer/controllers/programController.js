@@ -6,9 +6,7 @@ const mongoose = require("mongoose"),
 function list(req, res) {
     Program.find({}).exec((err, programs) => {
         if (err) {
-            return res.status(500).json({
-                message: `Error fetching programs: ${err.message}`
-            });
+            return res.status(400).json(err);
         } else {
             return res.status(200).json(programs);
         }
@@ -17,30 +15,18 @@ function list(req, res) {
 
 function listByUsername(req, res, next) {
     let username = req.params.username;
-    console.log("username: " + username);
     if (!username) {
-        res.status(400).json({ message: "Username required"});
+        res.status(404).json({message: "Not found, username required"});
         next();
     }
 
-    Program.find({userName: username}).exec((err, programs) => {
+    Program.find({username: username}).exec((err, programs) => {
         if (err) {
-            return res.status(500).json({
-                message: `Error fetching programs for ${username}: ${err.message}`
-            });
+            return res.status(400).json(err);
         } else {
             return res.status(200).json(programs);
         }
     })
-}
-
-function find(req, res) {
-    res.render("find", {
-        error: "",
-        locals: {
-            user: req.user,
-        },
-    });
 }
 
 async function show(req, res) {
@@ -65,44 +51,28 @@ async function show(req, res) {
         }
     } catch (err) {
         console.log(err);
-        handleError(err, res);
     }
 }
 
-function add(req, res) {
-    res.render("add", {
-        locals: {
-            user: req.user,
-        },
+function create(req, res, next) {
+    let programName = req.body.name;
+    let username = req.body.username;
+    if (!programName || !username) {
+        res.status(404).json({message: "Not found, program name and username required"});
+        next();
+    }
+
+    let program = new Program({
+        name: programName,
+        username: username
     });
-}
 
-async function create(req, res) {
-    try {
-        let program = new Program({name: req.body.fname});
-
-        await program.save();
-
-        console.log(`created program ${program.name}`);
-
-        res.render("edit", {
-            programName: program.name,
-            locals: {
-                user: req.user,
-            },
-        });
-    } catch (err) {
-        console.log(err);
-        handleError(err, res);
-    }
-}
-
-function edit(req, res) {
-    res.render("edit", {
-        programName: req.params.name,
-        locals: {
-            user: req.user,
-        },
+    program.save((err, result) => {
+        if (err) {
+            return res.status(400).json(err);
+        } else {
+            return res.status(201).json(result);
+        }
     });
 }
 
@@ -129,21 +99,13 @@ async function update(req, res) {
         });
     } catch (err) {
         console.log(err);
-        handleError(err, res);
     }
-}
-
-function handleError(res, err) {
-    return res.status(400).send({message: err});
 }
 
 module.exports = {
     list: list,
     listByUsername: listByUsername,
-    find: find,
     show: show,
-    add: add,
     create: create,
-    edit: edit,
     update: update,
 };

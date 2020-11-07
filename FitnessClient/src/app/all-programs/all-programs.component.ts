@@ -15,7 +15,7 @@ export class AllProgramsComponent implements OnInit {
   constructor(private programService: ProgramService) { }
 
   ngOnInit(): void {
-    this.programService.getPrograms()
+    this.programService.get()
       .subscribe(programs => this.programs = programs);
   }
 }

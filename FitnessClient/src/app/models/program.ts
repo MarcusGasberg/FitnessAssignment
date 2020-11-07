@@ -2,6 +2,6 @@ import {Exercise} from "./exercise";
 
 export interface Program {
   name: string,
-  userName: string,
+  username: string,
   exercises: Exercise[]
 }
