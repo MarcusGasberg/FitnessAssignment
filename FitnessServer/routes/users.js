@@ -14,7 +14,7 @@ router.post("/sign-out", function (req, res, next) {
 router.post("/authenticate", async function (req, res, next) {
   if (!req.body.username || !req.body.password) {
     res.status(400).json({ message: "Username and Password are required" });
-    next();
+    return;
   }
 
   const User = mongoose.model("User");
@@ -26,6 +26,7 @@ router.post("/authenticate", async function (req, res, next) {
     if (valid) {
       const token = u.generateJwt();
       res.status(200).json(u);
+      return;
     }
   }
 
