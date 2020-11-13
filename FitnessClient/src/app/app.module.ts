@@ -21,18 +21,32 @@ import { MatListModule } from '@angular/material/list';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { AllProgramsComponent } from './all-programs/all-programs.component';
-import { MatTableModule } from "@angular/material/table";
-import {FlexLayoutModule} from "@angular/flex-layout";
+import { MatTableModule } from '@angular/material/table';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MyProgramsComponent } from './my-programs/my-programs.component';
 import { ProgramListComponent } from './program-list/program-list.component';
 import { ProgramDetailsComponent } from './program-details/program-details.component';
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateProgramDialogComponent } from './create-program-dialog/create-program-dialog.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import { MatDialogModule } from '@angular/material/dialog';
 import { CreateExerciseDialogComponent } from './create-exercise-dialog/create-exercise-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavComponent, RegisterComponent, HomeComponent, AllProgramsComponent, MyProgramsComponent, ProgramListComponent, ProgramDetailsComponent, CreateProgramDialogComponent, CreateExerciseDialogComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    NavComponent,
+    RegisterComponent,
+    HomeComponent,
+    AllProgramsComponent,
+    MyProgramsComponent,
+    ProgramListComponent,
+    ProgramDetailsComponent,
+    CreateProgramDialogComponent,
+    CreateExerciseDialogComponent,
+    ConfirmDialogComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -52,7 +66,7 @@ import { CreateExerciseDialogComponent } from './create-exercise-dialog/create-e
     MatTableModule,
     FlexLayoutModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

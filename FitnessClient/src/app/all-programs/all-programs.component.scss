@@ -14,3 +14,12 @@ caption {
   font-size: medium;
 }
 
+mat-card {
+  margin: 1rem;
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.spacer {
+  margin: auto;
+}
