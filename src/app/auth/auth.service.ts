@@ -27,7 +27,7 @@ export class AuthService {
 
   login(username: string, password: string): Observable<User> {
     return this.http
-      .post<any>(`${environment.apiUrl}/users/authenticate`, {
+      .post<any>(`${environment.apiUrl}/api/users/authenticate`, {
         username,
         password,
       })
@@ -42,7 +42,7 @@ export class AuthService {
 
   register(user: User): Observable<User> {
     return this.http
-      .post<any>(`${environment.apiUrl}/users/register`, user)
+      .post<any>(`${environment.apiUrl}/api/users/register`, user)
       .pipe(
         map((result: User) => {
           localStorage.setItem('currentUser', JSON.stringify(result));

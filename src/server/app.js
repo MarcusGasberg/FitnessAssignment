@@ -4,7 +4,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-var cors = require('cors')
+var cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -20,12 +20,16 @@ partials.register(".ejs", "ejs");
 
 var app = express();
 
-var corsOptions = {
-  origin: 'http://localhost:4200',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+// Create link to Angular build directory
+var distDir = path.join(__dirname, "../../dist/");
+app.use(express.static(distDir));
 
-app.use(cors(corsOptions))
+var corsOptions = {
+  origin: "http://localhost:4200",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -54,11 +58,14 @@ app.use(async function (req, res, next) {
   next();
 });
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/api", programRouter);
-app.use("/sign-up", signUpRouter);
-app.use("/sign-in", signInRouter);
+app.use("/api/", indexRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/programs", programRouter);
+app.use("/api/sign-up", signUpRouter);
+app.use("/api/sign-in", signInRouter);
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../dist/index.html"));
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

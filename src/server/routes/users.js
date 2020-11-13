@@ -25,6 +25,7 @@ router.post("/authenticate", async function (req, res, next) {
     const valid = u.validatePassword(pwd);
     if (valid) {
       const token = u.generateJwt();
+      res.cookie("jwt", token, { secure: true, httpOnly: true });
       res.status(200).json(u);
       return;
     }
