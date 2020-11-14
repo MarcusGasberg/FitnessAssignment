@@ -6,6 +6,9 @@
       <button mat-icon-button matTooltip="Create program" (click)="addProgram()">
         <mat-icon>add</mat-icon>
       </button>
+      <button mat-icon-button matTooltip="Edit program" (click)="updateProgram()" [disabled]="!selectedProgram">
+        <mat-icon>edit</mat-icon>
+      </button>
       <button mat-icon-button matTooltip="Remove program" (click)="removeProgram()" [disabled]="!selectedProgram">
         <mat-icon>delete</mat-icon>
       </button>

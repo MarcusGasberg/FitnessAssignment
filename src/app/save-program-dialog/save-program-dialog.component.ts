@@ -6,17 +6,18 @@ import {AuthService} from "../auth/auth.service";
 
 @Component({
   selector: 'app-create-program-dialog',
-  templateUrl: './create-program-dialog.component.html',
-  styleUrls: ['./create-program-dialog.component.scss']
+  templateUrl: './save-program-dialog.component.html',
+  styleUrls: ['./save-program-dialog.component.scss']
 })
-export class CreateProgramDialogComponent implements OnInit {
+export class SaveProgramDialogComponent implements OnInit {
 
   programForm: FormGroup;
+  dialogTitle: string;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    public dialogRef: MatDialogRef<CreateProgramDialogComponent>
+    public dialogRef: MatDialogRef<SaveProgramDialogComponent>
   ) {
     this.programForm = fb.group({
       name: ['', Validators.required]

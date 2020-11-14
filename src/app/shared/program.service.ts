@@ -29,6 +29,15 @@ export class ProgramService {
     });
   }
 
+  updateProgram(programId: string, program: Program): Observable<object> {
+    return this.http.put(`${environment.apiUrl}/api/programs/${programId}`, {
+      id: program._id,
+      name: program.name,
+      username: program.username,
+      exercises: program.exercises
+    });
+  }
+
   removeProgram(programId: string): Observable<object> {
     return this.http.delete(`${environment.apiUrl}/api/programs/${programId}`);
   }

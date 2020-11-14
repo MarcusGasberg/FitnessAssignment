@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>New program</h1>
+<h1 mat-dialog-title>{{dialogTitle}}</h1>
 <div mat-dialog-content class="container" [formGroup]="programForm">
   <mat-form-field>
     <input matInput placeholder="Name" formControlName="name"/>
@@ -8,6 +8,6 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onSave()">Add</button>
+  <button mat-button (click)="onSave()">Save</button>
   <button mat-button (click)="onCancel()">Cancel</button>
 </div>

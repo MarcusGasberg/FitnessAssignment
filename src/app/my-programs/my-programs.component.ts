@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ProgramService } from '../shared/program.service';
-import { Program } from '../models/program';
-import { filter, find, map } from 'rxjs/operators';
-import { CreateProgramDialogComponent } from '../create-program-dialog/create-program-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { CreateExerciseDialogComponent } from '../create-exercise-dialog/create-exercise-dialog.component';
-import { Exercise } from '../models/exercise';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {ProgramService} from '../shared/program.service';
+import {Program} from '../models/program';
+import {filter, find, map} from 'rxjs/operators';
+import {SaveProgramDialogComponent} from '../save-program-dialog/save-program-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {CreateExerciseDialogComponent} from '../create-exercise-dialog/create-exercise-dialog.component';
+import {Exercise} from '../models/exercise';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-my-programs',
@@ -21,7 +21,8 @@ export class MyProgramsComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private programService: ProgramService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.getMyPrograms();
@@ -41,14 +42,37 @@ export class MyProgramsComponent implements OnInit {
       height: '16rem',
     };
     const dialogRef = this.dialog.open(
-      CreateProgramDialogComponent,
+      SaveProgramDialogComponent,
       dialogOptions
     );
+    dialogRef.componentInstance.dialogTitle = 'New program';
     dialogRef.afterClosed().subscribe((result: Program) => {
       if (result) {
         this.programService
           .addProgram(result.name, result.username)
           .subscribe((_) => this.getMyPrograms());
+      }
+    });
+  }
+
+  updateProgram(): void {
+    const dialogOptions = {
+      width: '24rem',
+      height: '16rem'
+    };
+    const dialogRef = this.dialog.open(
+      SaveProgramDialogComponent,
+      dialogOptions
+    );
+    dialogRef.componentInstance.dialogTitle = 'Edit program';
+    dialogRef.afterClosed().subscribe((result: Program) => {
+      if (result) {
+        this.selectedProgram.name = result.name;
+        this.programService
+          .updateProgram(this.selectedProgram._id, this.selectedProgram)
+          .subscribe((_) => {
+            this.getMyPrograms();
+          });
       }
     });
   }
@@ -107,5 +131,6 @@ export class MyProgramsComponent implements OnInit {
     });
   }
 
-  removeExercise(): void {}
+  removeExercise(): void {
+  }
 }

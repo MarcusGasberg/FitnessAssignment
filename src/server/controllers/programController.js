@@ -54,6 +54,29 @@ function create(req, res, next) {
   });
 }
 
+function updateProgram(req, res) {
+  let programId = req.params.programId;
+  if (!programId) {
+    res.status(404).json({ message: "Not found, program id required" });
+    next();
+  }
+
+  let programUpdate = new Program({
+    _id: req.body.id,
+    name: req.body.name,
+    username: req.body.username,
+    exercises: req.body.exercises,
+  });
+
+  Program.findByIdAndUpdate(programId, programUpdate,  {useFindAndModify: false}).exec((err) => {
+    if (err) {
+      return res.status(400).json(err);
+    } else {
+      return res.status(200).json();
+    }
+  });
+}
+
 function deleteProgram(req, res, next) {
   let programId = req.params.programId;
   if (!programId) {
@@ -105,5 +128,6 @@ module.exports = {
   listByUsername: listByUsername,
   create: create,
   createExercise: createExercise,
+  update: updateProgram,
   delete: deleteProgram,
 };

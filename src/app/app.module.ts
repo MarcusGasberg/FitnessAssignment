@@ -27,7 +27,7 @@ import { MyProgramsComponent } from './my-programs/my-programs.component';
 import { ProgramListComponent } from './program-list/program-list.component';
 import { ProgramDetailsComponent } from './program-details/program-details.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CreateProgramDialogComponent } from './create-program-dialog/create-program-dialog.component';
+import { SaveProgramDialogComponent } from './save-program-dialog/save-program-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CreateExerciseDialogComponent } from './create-exercise-dialog/create-exercise-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
@@ -43,7 +43,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MyProgramsComponent,
     ProgramListComponent,
     ProgramDetailsComponent,
-    CreateProgramDialogComponent,
+    SaveProgramDialogComponent,
     CreateExerciseDialogComponent,
     ConfirmDialogComponent,
   ],
