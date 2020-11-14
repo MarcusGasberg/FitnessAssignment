@@ -5,7 +5,7 @@ import {map} from 'rxjs/operators';
 import {SaveProgramDialogComponent} from '../save-program-dialog/save-program-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
-import {CreateExerciseDialogComponent} from '../create-exercise-dialog/create-exercise-dialog.component';
+import {SaveExerciseDialogComponent} from '../save-exercise-dialog/save-exercise-dialog.component';
 import {Exercise} from '../models/exercise';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 
@@ -107,9 +107,10 @@ export class MyProgramsComponent implements OnInit {
       height: '32rem',
     };
     const dialogRef = this.dialog.open(
-      CreateExerciseDialogComponent,
+      SaveExerciseDialogComponent,
       dialogOptions
     );
+    dialogRef.componentInstance.dialogTitle = 'New exercise';
     dialogRef.afterClosed().subscribe((result: Exercise) => {
       if (result) {
         this.programService
@@ -129,6 +130,42 @@ export class MyProgramsComponent implements OnInit {
                 this.getMyPrograms();
               });
           });
+      }
+    });
+  }
+
+  updateExercise(): void {
+    const dialogOptions = {
+      width: '24rem',
+      height: '32rem',
+    };
+    const dialogRef = this.dialog.open(
+      SaveExerciseDialogComponent,
+      dialogOptions
+    );
+    dialogRef.componentInstance.dialogTitle = 'Edit exercise';
+    dialogRef.afterClosed().subscribe((result: Exercise) => {
+      if (result) {
+        this.programService
+          .updateExercise(
+            this.selectedProgram._id,
+            this.programDetails.selectedTableElement.exercise._id,
+            result
+          ).subscribe((_) => {
+          this.programService
+            .getProgramsByUsername()
+            .pipe(
+              map((programs) =>
+                programs.find(
+                  (program) => program._id === this.selectedProgram._id
+                )
+              )
+            )
+            .subscribe((program) => {
+              this.selectedProgram = program;
+              this.getMyPrograms();
+            });
+        });
       }
     });
   }

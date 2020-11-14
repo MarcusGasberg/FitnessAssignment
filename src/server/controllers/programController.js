@@ -1,10 +1,8 @@
-const mongoose = require("mongoose");
-
 const exercise = require("../models/exercise"),
   Program = require("../models/program"),
   Exercise = exercise.Exercise;
 
-function list(req, res) {
+function listPrograms(req, res) {
   Program.find({}).exec((err, programs) => {
     if (err) {
       return res.status(400).json(err);
@@ -14,7 +12,7 @@ function list(req, res) {
   });
 }
 
-function listByUsername(req, res, next) {
+function listProgramsByUsername(req, res, next) {
   let username = req.params.username;
   if (!username) {
     res.status(404).json({message: "Not found, username required"});
@@ -30,7 +28,7 @@ function listByUsername(req, res, next) {
   });
 }
 
-function create(req, res, next) {
+function createProgram(req, res, next) {
   let programName = req.body.name;
   let username = req.body.username;
   if (!programName || !username) {
@@ -123,6 +121,39 @@ function createExercise(req, res, next) {
   });
 }
 
+async function updateExercise(req, res, next) {
+  let programId = req.params.programId;
+  let exerciseId = req.params.exerciseId;
+  if (!programId || !exerciseId) {
+    res.status(404).json({message: "Not found, program and exercise id's required"});
+    next();
+  }
+
+  let exerciseUpdate = new Exercise({
+    name: req.body.name,
+    description: req.body.description,
+    sets: req.body.sets,
+    repsOrTime: req.body.repsOrTime,
+  });
+
+  Program.findOneAndUpdate(
+    {"_id": programId, "exercises._id": exerciseId},
+    {
+      "$set": {
+        "exercises.$": exerciseUpdate
+      }
+    },
+    {useFindAndModify: false},
+    (err, result) => {
+      if (err) {
+        return res.status(400).json(err);
+      } else {
+        return res.status(200).json(result);
+      }
+    }
+  );
+}
+
 function deleteExercise(req, res, next) {
   let programId = req.params.programId;
   let exerciseId = req.params.exerciseId;
@@ -145,11 +176,12 @@ function deleteExercise(req, res, next) {
 }
 
 module.exports = {
-  list: list,
-  listByUsername: listByUsername,
-  create: create,
-  update: updateProgram,
-  delete: deleteProgram,
+  listPrograms: listPrograms,
+  listProgramsByUsername: listProgramsByUsername,
+  createProgram: createProgram,
+  updateProgram: updateProgram,
+  deleteProgram: deleteProgram,
   createExercise: createExercise,
+  updateExercise: updateExercise,
   deleteExercise: deleteExercise,
 };

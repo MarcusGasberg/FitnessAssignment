@@ -5,16 +5,17 @@ import {Exercise} from "../models/exercise";
 
 @Component({
   selector: 'app-create-exercise-dialog',
-  templateUrl: './create-exercise-dialog.component.html',
-  styleUrls: ['./create-exercise-dialog.component.scss']
+  templateUrl: './save-exercise-dialog.component.html',
+  styleUrls: ['./save-exercise-dialog.component.scss']
 })
-export class CreateExerciseDialogComponent implements OnInit {
+export class SaveExerciseDialogComponent implements OnInit {
 
   exerciseForm: FormGroup;
+  dialogTitle: string;
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<CreateExerciseDialogComponent>
+    public dialogRef: MatDialogRef<SaveExerciseDialogComponent>
   ) {
     this.exerciseForm = fb.group({
       name: ['', Validators.required],

@@ -29,7 +29,7 @@ import { ProgramDetailsComponent } from './program-details/program-details.compo
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SaveProgramDialogComponent } from './save-program-dialog/save-program-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CreateExerciseDialogComponent } from './create-exercise-dialog/create-exercise-dialog.component';
+import { SaveExerciseDialogComponent } from './save-exercise-dialog/save-exercise-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
@@ -44,7 +44,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     ProgramListComponent,
     ProgramDetailsComponent,
     SaveProgramDialogComponent,
-    CreateExerciseDialogComponent,
+    SaveExerciseDialogComponent,
     ConfirmDialogComponent,
   ],
   imports: [

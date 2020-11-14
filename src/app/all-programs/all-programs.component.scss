@@ -5,13 +5,18 @@ caption {
   caption-side: top;
 }
 
+.mat-header-cell {
+  text-align: center;
+  font-weight: bold;
+  font-size: medium;
+}
+
 .program {
   margin-bottom: 2rem;
 }
 
-.mat-header-cell {
-  font-weight: bold;
-  font-size: medium;
+.program-card-content {
+  text-align: center;
 }
 
 mat-card {

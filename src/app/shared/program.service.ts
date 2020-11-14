@@ -54,6 +54,15 @@ export class ProgramService {
     );
   }
 
+  updateExercise(programId: string, exerciseId: string, exercise: Exercise): Observable<object> {
+    return this.http.put(`${environment.apiUrl}/api/programs/${programId}/exercises/${exerciseId}`, {
+      name: exercise.name,
+      description: exercise.description,
+      sets: exercise.sets,
+      repsOrTime: exercise.repsOrTime
+    });
+  }
+
   removeExercise(programId: string, exerciseId: string): Observable<object> {
     return this.http.delete(`${environment.apiUrl}/api/programs/${programId}/exercises/${exerciseId}`);
   }
