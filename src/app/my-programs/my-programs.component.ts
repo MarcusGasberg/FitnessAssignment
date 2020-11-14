@@ -105,12 +105,21 @@ export class MyProgramsComponent implements OnInit {
     const dialogOptions = {
       width: '24rem',
       height: '32rem',
+      data: {
+        dialogTitle: 'New exercise',
+        exerciseToSave: {
+          _id: '',
+          name: '',
+          description: '',
+          sets: 0,
+          repsOrTime: ''
+        } as Exercise
+      },
     };
     const dialogRef = this.dialog.open(
       SaveExerciseDialogComponent,
       dialogOptions
     );
-    dialogRef.componentInstance.dialogTitle = 'New exercise';
     dialogRef.afterClosed().subscribe((result: Exercise) => {
       if (result) {
         this.programService
@@ -138,12 +147,21 @@ export class MyProgramsComponent implements OnInit {
     const dialogOptions = {
       width: '24rem',
       height: '32rem',
+      data: {
+        dialogTitle: 'Edit exercise',
+        exerciseToSave: {
+          _id: this.programDetails.selectedTableElement.exercise._id,
+          name: this.programDetails.selectedTableElement.exercise.name,
+          description: this.programDetails.selectedTableElement.exercise.description,
+          sets: this.programDetails.selectedTableElement.exercise.sets,
+          repsOrTime: this.programDetails.selectedTableElement.exercise.repsOrTime
+        } as Exercise
+      },
     };
     const dialogRef = this.dialog.open(
       SaveExerciseDialogComponent,
       dialogOptions
     );
-    dialogRef.componentInstance.dialogTitle = 'Edit exercise';
     dialogRef.afterClosed().subscribe((result: Exercise) => {
       if (result) {
         this.programService
@@ -181,7 +199,10 @@ export class MyProgramsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogOptions);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.programDetails.removeSelectedExercise().subscribe((_) => {
+        this.programService.removeExercise(
+          this.selectedProgram._id,
+          this.programDetails.selectedTableElement.exercise._id
+        ).subscribe((_) => {
           this.programService
             .getProgramsByUsername()
             .pipe(

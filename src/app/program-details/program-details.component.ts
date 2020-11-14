@@ -2,9 +2,12 @@ import {Component, Input, OnChanges} from '@angular/core';
 import {Program} from "../models/program";
 import {Exercise} from "../models/exercise";
 import {MatTableDataSource} from "@angular/material/table";
-import {ProgramService} from "../shared/program.service";
-import {Observable} from "rxjs";
 import {Router} from "@angular/router";
+
+export interface TableElement {
+  exercise: Exercise,
+  position: number
+}
 
 @Component({
   selector: 'app-program-details',
@@ -18,8 +21,7 @@ export class ProgramDetailsComponent implements OnChanges {
   selectedTableElement: TableElement;
   dataSource = new MatTableDataSource<TableElement>();
 
-  constructor(private router: Router,
-              private programService: ProgramService) {
+  constructor(private router: Router) {
   }
 
   ngOnChanges(): void {
@@ -38,17 +40,7 @@ export class ProgramDetailsComponent implements OnChanges {
     return {exercise: exercise, position: index} as TableElement;
   }
 
-  removeSelectedExercise(): Observable<object> {
-    let exerciseToRemove = this.selectedTableElement.exercise;
-    return this.programService.removeExercise(this.program._id, exerciseToRemove._id);
-  }
-
   isMyProgramsRoute() {
     return this.router.url.includes('/myPrograms');
   }
-}
-
-export interface TableElement {
-  exercise: Exercise,
-  position: number
 }
