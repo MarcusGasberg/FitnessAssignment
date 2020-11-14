@@ -1,27 +1,36 @@
 <div fxLayout="column">
-  <table mat-table [dataSource]="program?.exercises" class="mat-elevation-z0">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
 
     <ng-container matColumnDef="exercise">
       <th mat-header-cell *matHeaderCellDef> Exercise</th>
-      <td mat-cell *matCellDef="let exercise"> {{exercise.name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.exercise?.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="description">
       <th mat-header-cell *matHeaderCellDef> Description</th>
-      <td mat-cell *matCellDef="let exercise"> {{exercise.description}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.exercise?.description}} </td>
     </ng-container>
 
     <ng-container matColumnDef="sets">
       <th mat-header-cell *matHeaderCellDef> Sets</th>
-      <td mat-cell *matCellDef="let exercise"> {{exercise.sets}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.exercise?.sets}} </td>
     </ng-container>
 
     <ng-container matColumnDef="repsOrTime">
       <th mat-header-cell *matHeaderCellDef> Reps/time</th>
-      <td mat-cell *matCellDef="let exercise"> {{exercise.repsOrTime}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.exercise?.repsOrTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="select">
+      <th *matHeaderCellDef [hidden]="!isMyProgramsRoute()"></th>
+      <td *matCellDef="let exercise" [hidden]="!isMyProgramsRoute()">
+        <mat-radio-button color="primary" [checked]="selectedTableElement?.position === exercise.position"></mat-radio-button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"
+        (click)="onElementSelected(row)">
+    </tr>
   </table>
 </div>

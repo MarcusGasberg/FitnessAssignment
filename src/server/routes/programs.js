@@ -11,6 +11,8 @@ router.route("/:username").get(programController.listByUsername);
 
 router.route("/:programId/exercises").post(programController.createExercise);
 
+router.route("/:programId/exercises/:exerciseId").delete(programController.deleteExercise);
+
 router.route("/:programId")
   .put(programController.update)
   .delete(programController.delete);

@@ -53,4 +53,8 @@ export class ProgramService {
       }
     );
   }
+
+  removeExercise(programId: string, exerciseId: string): Observable<object> {
+    return this.http.delete(`${environment.apiUrl}/api/programs/${programId}/exercises/${exerciseId}`);
+  }
 }

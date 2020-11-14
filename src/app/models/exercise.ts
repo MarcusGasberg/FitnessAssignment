@@ -1,6 +1,7 @@
 export interface Exercise {
-  name: String,
-  description: String,
-  sets: Number,
+  _id: string,
+  name: string,
+  description: string,
+  sets: number,
   repsOrTime: any
 }

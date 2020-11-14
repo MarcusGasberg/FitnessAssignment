@@ -17,11 +17,11 @@ function list(req, res) {
 function listByUsername(req, res, next) {
   let username = req.params.username;
   if (!username) {
-    res.status(404).json({ message: "Not found, username required" });
+    res.status(404).json({message: "Not found, username required"});
     next();
   }
 
-  Program.find({ username: username }).exec((err, programs) => {
+  Program.find({username: username}).exec((err, programs) => {
     if (err) {
       return res.status(400).json(err);
     } else {
@@ -36,7 +36,7 @@ function create(req, res, next) {
   if (!programName || !username) {
     res
       .status(404)
-      .json({ message: "Not found, program name and username required" });
+      .json({message: "Not found, program name and username required"});
     next();
   }
 
@@ -57,7 +57,7 @@ function create(req, res, next) {
 function updateProgram(req, res) {
   let programId = req.params.programId;
   if (!programId) {
-    res.status(404).json({ message: "Not found, program id required" });
+    res.status(404).json({message: "Not found, program id required"});
     next();
   }
 
@@ -68,7 +68,7 @@ function updateProgram(req, res) {
     exercises: req.body.exercises,
   });
 
-  Program.findByIdAndUpdate(programId, programUpdate,  {useFindAndModify: false}).exec((err) => {
+  Program.findByIdAndUpdate(programId, programUpdate, {useFindAndModify: false}).exec((err) => {
     if (err) {
       return res.status(400).json(err);
     } else {
@@ -80,11 +80,11 @@ function updateProgram(req, res) {
 function deleteProgram(req, res, next) {
   let programId = req.params.programId;
   if (!programId) {
-    res.status(404).json({ message: "Not found, username required" });
+    res.status(404).json({message: "Not found, username required"});
     return;
   }
 
-  Program.deleteOne({ _id: programId }).exec((err, _) => {
+  Program.deleteOne({_id: programId}).exec((err, _) => {
     if (err) {
       return res.status(400).json(err);
     } else {
@@ -96,7 +96,7 @@ function deleteProgram(req, res, next) {
 function createExercise(req, res, next) {
   let programId = req.params.programId;
   if (!programId) {
-    res.status(404).json({ message: "Not found, program id required" });
+    res.status(404).json({message: "Not found, program id required"});
     next();
   }
 
@@ -123,11 +123,33 @@ function createExercise(req, res, next) {
   });
 }
 
+function deleteExercise(req, res, next) {
+  let programId = req.params.programId;
+  let exerciseId = req.params.exerciseId;
+  if (!programId || !exerciseId) {
+    res.status(404).json({message: "Not found, program and exercise id's required"});
+    next();
+  }
+
+  Program.update(
+    {"_id": programId},
+    {"$pull": {"exercises": {"_id": exerciseId}}},
+    function (err) {
+      if (err) {
+        return res.status(400).json(err);
+      } else {
+        return res.status(204).json();
+      }
+    }
+  );
+}
+
 module.exports = {
   list: list,
   listByUsername: listByUsername,
   create: create,
-  createExercise: createExercise,
   update: updateProgram,
   delete: deleteProgram,
+  createExercise: createExercise,
+  deleteExercise: deleteExercise,
 };

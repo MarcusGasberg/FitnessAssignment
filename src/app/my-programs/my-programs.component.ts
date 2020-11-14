@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProgramService} from '../shared/program.service';
 import {Program} from '../models/program';
-import {filter, find, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {SaveProgramDialogComponent} from '../save-program-dialog/save-program-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
@@ -23,6 +23,8 @@ export class MyProgramsComponent implements OnInit {
     private programService: ProgramService
   ) {
   }
+
+  @ViewChild('programDetails') programDetails;
 
   ngOnInit(): void {
     this.getMyPrograms();
@@ -132,5 +134,32 @@ export class MyProgramsComponent implements OnInit {
   }
 
   removeExercise(): void {
+    const dialogOptions = {
+      width: '24rem',
+      data: {
+        title: `Are you sure?`,
+        msg: `Are you sure you want to delete ${this.programDetails.selectedTableElement.exercise.name}`,
+      },
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogOptions);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.programDetails.removeSelectedExercise().subscribe((_) => {
+          this.programService
+            .getProgramsByUsername()
+            .pipe(
+              map((programs) =>
+                programs.find(
+                  (program) => program._id === this.selectedProgram._id
+                )
+              )
+            )
+            .subscribe((program) => {
+              this.selectedProgram = program;
+              this.getMyPrograms();
+            });
+        });
+      }
+    });
   }
 }

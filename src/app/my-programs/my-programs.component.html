@@ -27,9 +27,15 @@
       <button mat-icon-button matTooltip="Create exercise" (click)="addExercise()">
         <mat-icon>add</mat-icon>
       </button>
+      <button mat-icon-button matTooltip="Edit exercise">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Remove exercise" (click)="removeExercise()" [disabled]="!programDetails.selectedTableElement">
+        <mat-icon>delete</mat-icon>
+      </button>
     </mat-card-header>
     <mat-card-content class="program-card-content">
-      <app-program-details [program]="selectedProgram">
+      <app-program-details #programDetails [program]="selectedProgram">
       </app-program-details>
     </mat-card-content>
   </mat-card>
