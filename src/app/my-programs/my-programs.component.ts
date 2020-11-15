@@ -8,6 +8,9 @@ import {Observable} from 'rxjs';
 import {SaveExerciseDialogComponent} from '../save-exercise-dialog/save-exercise-dialog.component';
 import {Exercise} from '../models/exercise';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import {WorkoutService} from "../shared/workout.service";
+import {LogWorkoutDialogComponent} from "../log-workout-dialog/log-workout-dialog.component";
+import {Workout} from "../models/workout";
 
 @Component({
   selector: 'app-my-programs',
@@ -20,7 +23,8 @@ export class MyProgramsComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private programService: ProgramService
+    private programService: ProgramService,
+    private workoutService: WorkoutService
   ) {
   }
 
@@ -42,12 +46,15 @@ export class MyProgramsComponent implements OnInit {
     const dialogOptions = {
       width: '24rem',
       height: '16rem',
+      data: {
+        dialogTitle: 'New program',
+        programName: ''
+      },
     };
     const dialogRef = this.dialog.open(
       SaveProgramDialogComponent,
       dialogOptions
     );
-    dialogRef.componentInstance.dialogTitle = 'New program';
     dialogRef.afterClosed().subscribe((result: Program) => {
       if (result) {
         this.programService
@@ -60,13 +67,16 @@ export class MyProgramsComponent implements OnInit {
   updateProgram(): void {
     const dialogOptions = {
       width: '24rem',
-      height: '16rem'
+      height: '16rem',
+      data: {
+        dialogTitle: 'Edit program',
+        programName: this.selectedProgram.name
+      },
     };
     const dialogRef = this.dialog.open(
       SaveProgramDialogComponent,
       dialogOptions
     );
-    dialogRef.componentInstance.dialogTitle = 'Edit program';
     dialogRef.afterClosed().subscribe((result: Program) => {
       if (result) {
         this.selectedProgram.name = result.name;
@@ -217,6 +227,28 @@ export class MyProgramsComponent implements OnInit {
               this.getMyPrograms();
             });
         });
+      }
+    });
+  }
+
+  logWorkout(): void {
+    const dialogOptions = {
+      width: '24rem',
+      height: '32rem',
+      data: {
+        dialogTitle: 'Log workout',
+        selectedProgram: this.selectedProgram
+      },
+    };
+    const dialogRef = this.dialog.open(
+      LogWorkoutDialogComponent,
+      dialogOptions
+    );
+    dialogRef.afterClosed().subscribe((result: Workout) => {
+      if (result) {
+        this.workoutService
+          .addWorkout(result)
+          .subscribe((_) => this.getMyPrograms());
       }
     });
   }

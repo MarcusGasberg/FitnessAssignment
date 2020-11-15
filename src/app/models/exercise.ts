@@ -3,5 +3,6 @@ export interface Exercise {
   name: string,
   description: string,
   sets: number,
-  repsOrTime: any
+  repsOrTime: any,
+  isCompleted: boolean
 }

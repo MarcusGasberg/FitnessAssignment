@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -31,6 +31,8 @@ import { SaveProgramDialogComponent } from './save-program-dialog/save-program-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { SaveExerciseDialogComponent } from './save-exercise-dialog/save-exercise-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { LogWorkoutDialogComponent } from './log-workout-dialog/log-workout-dialog.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     SaveProgramDialogComponent,
     SaveExerciseDialogComponent,
     ConfirmDialogComponent,
+    LogWorkoutDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     FlexLayoutModule,
     MatTooltipModule,
     MatDialogModule,
+    MatCheckboxModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

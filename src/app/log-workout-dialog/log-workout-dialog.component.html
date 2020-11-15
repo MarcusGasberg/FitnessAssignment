@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>{{data.dialogTitle}}</h1>
+<div mat-dialog-content class="container" [formGroup]="workoutForm">
+  <mat-form-field>
+    <input matInput placeholder="Name" formControlName="name"/>
+    <mat-error *ngIf="workoutForm.get('name').hasError('required')">
+      A workout name is required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput
+              formControlName="comment"
+              placeholder="Comment"
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5">
+    </textarea>
+  </mat-form-field>
+</div>
+<section class="exercise-section">
+  <h3>Completed exercises:</h3>
+  <ul class="exercise-list-section">
+    <li *ngFor="let exercise of exercisesToComplete">
+      <mat-checkbox [(ngModel)]="exercise.isCompleted"
+                    [ngModelOptions]="{standalone: true}"
+                    color="primary">
+        {{exercise.name}}
+      </mat-checkbox>
+    </li>
+  </ul>
+</section>
+<mat-error *ngIf="!someExercisesComplete()">
+  At least one exercise must be completed
+</mat-error>
+<div mat-dialog-actions>
+  <button mat-button (click)="onSave()" [disabled]="!someExercisesComplete()">Save</button>
+  <button mat-button (click)="onCancel()">Cancel</button>
+</div>

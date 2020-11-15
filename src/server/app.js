@@ -9,6 +9,7 @@ var cors = require("cors");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var programRouter = require("./routes/programs");
+var workoutRouter = require("./routes/workouts");
 var signUpRouter = require("./routes/sign-up");
 var signInRouter = require("./routes/sign-in");
 var mongoose = require("mongoose");
@@ -61,6 +62,7 @@ app.use(async function (req, res, next) {
 app.use("/api/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/programs", programRouter);
+app.use("/api/workouts", workoutRouter);
 app.use("/api/sign-up", signUpRouter);
 app.use("/api/sign-in", signInRouter);
 app.get("*", (req, res) => {

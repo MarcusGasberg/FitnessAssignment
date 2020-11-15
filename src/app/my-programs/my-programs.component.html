@@ -9,6 +9,9 @@
       <button mat-icon-button matTooltip="Edit program" (click)="updateProgram()" [disabled]="!selectedProgram">
         <mat-icon>edit</mat-icon>
       </button>
+      <button mat-icon-button matTooltip="Log workout" (click)="logWorkout()" [disabled]="!selectedProgram">
+        <mat-icon>post_add</mat-icon>
+      </button>
       <button mat-icon-button matTooltip="Remove program" (click)="removeProgram()" [disabled]="!selectedProgram">
         <mat-icon>delete</mat-icon>
       </button>
