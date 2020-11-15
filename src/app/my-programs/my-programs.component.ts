@@ -1,16 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProgramService} from '../shared/program.service';
-import {Program} from '../models/program';
-import {map} from 'rxjs/operators';
-import {SaveProgramDialogComponent} from '../save-program-dialog/save-program-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {Observable} from 'rxjs';
-import {SaveExerciseDialogComponent} from '../save-exercise-dialog/save-exercise-dialog.component';
-import {Exercise} from '../models/exercise';
-import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
-import {WorkoutService} from "../shared/workout.service";
-import {LogWorkoutDialogComponent} from "../log-workout-dialog/log-workout-dialog.component";
-import {Workout} from "../models/workout";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ProgramService } from '../shared/program.service';
+import { Program } from '../models/program';
+import { map } from 'rxjs/operators';
+import { SaveProgramDialogComponent } from '../save-program-dialog/save-program-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { SaveExerciseDialogComponent } from '../save-exercise-dialog/save-exercise-dialog.component';
+import { Exercise } from '../models/exercise';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { WorkoutService } from '../shared/workout.service';
+import { LogWorkoutDialogComponent } from '../log-workout-dialog/log-workout-dialog.component';
+import { Workout } from '../models/workout';
 
 @Component({
   selector: 'app-my-programs',
@@ -25,8 +25,7 @@ export class MyProgramsComponent implements OnInit {
     private dialog: MatDialog,
     private programService: ProgramService,
     private workoutService: WorkoutService
-  ) {
-  }
+  ) {}
 
   @ViewChild('programDetails') programDetails;
 
@@ -45,10 +44,9 @@ export class MyProgramsComponent implements OnInit {
   addProgram(): void {
     const dialogOptions = {
       width: '24rem',
-      height: '16rem',
       data: {
         dialogTitle: 'New program',
-        programName: ''
+        programName: '',
       },
     };
     const dialogRef = this.dialog.open(
@@ -67,10 +65,9 @@ export class MyProgramsComponent implements OnInit {
   updateProgram(): void {
     const dialogOptions = {
       width: '24rem',
-      height: '16rem',
       data: {
         dialogTitle: 'Edit program',
-        programName: this.selectedProgram.name
+        programName: this.selectedProgram.name,
       },
     };
     const dialogRef = this.dialog.open(
@@ -114,7 +111,6 @@ export class MyProgramsComponent implements OnInit {
   addExercise(): void {
     const dialogOptions = {
       width: '24rem',
-      height: '32rem',
       data: {
         dialogTitle: 'New exercise',
         exerciseToSave: {
@@ -122,8 +118,8 @@ export class MyProgramsComponent implements OnInit {
           name: '',
           description: '',
           sets: 0,
-          repsOrTime: ''
-        } as Exercise
+          repsOrTime: '',
+        } as Exercise,
       },
     };
     const dialogRef = this.dialog.open(
@@ -156,16 +152,17 @@ export class MyProgramsComponent implements OnInit {
   updateExercise(): void {
     const dialogOptions = {
       width: '24rem',
-      height: '32rem',
       data: {
         dialogTitle: 'Edit exercise',
         exerciseToSave: {
           _id: this.programDetails.selectedTableElement.exercise._id,
           name: this.programDetails.selectedTableElement.exercise.name,
-          description: this.programDetails.selectedTableElement.exercise.description,
+          description: this.programDetails.selectedTableElement.exercise
+            .description,
           sets: this.programDetails.selectedTableElement.exercise.sets,
-          repsOrTime: this.programDetails.selectedTableElement.exercise.repsOrTime
-        } as Exercise
+          repsOrTime: this.programDetails.selectedTableElement.exercise
+            .repsOrTime,
+        } as Exercise,
       },
     };
     const dialogRef = this.dialog.open(
@@ -179,21 +176,22 @@ export class MyProgramsComponent implements OnInit {
             this.selectedProgram._id,
             this.programDetails.selectedTableElement.exercise._id,
             result
-          ).subscribe((_) => {
-          this.programService
-            .getProgramsByUsername()
-            .pipe(
-              map((programs) =>
-                programs.find(
-                  (program) => program._id === this.selectedProgram._id
+          )
+          .subscribe((_) => {
+            this.programService
+              .getProgramsByUsername()
+              .pipe(
+                map((programs) =>
+                  programs.find(
+                    (program) => program._id === this.selectedProgram._id
+                  )
                 )
               )
-            )
-            .subscribe((program) => {
-              this.selectedProgram = program;
-              this.getMyPrograms();
-            });
-        });
+              .subscribe((program) => {
+                this.selectedProgram = program;
+                this.getMyPrograms();
+              });
+          });
       }
     });
   }
@@ -209,24 +207,26 @@ export class MyProgramsComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogOptions);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.programService.removeExercise(
-          this.selectedProgram._id,
-          this.programDetails.selectedTableElement.exercise._id
-        ).subscribe((_) => {
-          this.programService
-            .getProgramsByUsername()
-            .pipe(
-              map((programs) =>
-                programs.find(
-                  (program) => program._id === this.selectedProgram._id
+        this.programService
+          .removeExercise(
+            this.selectedProgram._id,
+            this.programDetails.selectedTableElement.exercise._id
+          )
+          .subscribe((_) => {
+            this.programService
+              .getProgramsByUsername()
+              .pipe(
+                map((programs) =>
+                  programs.find(
+                    (program) => program._id === this.selectedProgram._id
+                  )
                 )
               )
-            )
-            .subscribe((program) => {
-              this.selectedProgram = program;
-              this.getMyPrograms();
-            });
-        });
+              .subscribe((program) => {
+                this.selectedProgram = program;
+                this.getMyPrograms();
+              });
+          });
       }
     });
   }
@@ -234,10 +234,9 @@ export class MyProgramsComponent implements OnInit {
   logWorkout(): void {
     const dialogOptions = {
       width: '24rem',
-      height: '32rem',
       data: {
         dialogTitle: 'Log workout',
-        selectedProgram: this.selectedProgram
+        selectedProgram: this.selectedProgram,
       },
     };
     const dialogRef = this.dialog.open(

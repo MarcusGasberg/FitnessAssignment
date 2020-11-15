@@ -4,6 +4,9 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +14,11 @@ import { User } from '../models/user';
 export class AuthService {
   private currentUser$: BehaviorSubject<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private dialog: MatDialog
+  ) {
     this.currentUser$ = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser'))
     );
@@ -53,7 +60,21 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
-    this.currentUser$.next(null);
+    const dialogOptions = {
+      width: '20rem',
+      data: {
+        title: 'Logout',
+        msg: 'Are you sure you want to logout?',
+      },
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogOptions);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        localStorage.removeItem('currentUser');
+        this.currentUser$.next(null);
+        this.router.navigate(['/']);
+      }
+    });
   }
 }
