@@ -27,4 +27,8 @@ export class WorkoutService {
       `${environment.apiUrl}/api/workouts/${this.authService.currentUserValue.username}`
     );
   }
+
+  removeWorkout(workoutId: string): Observable<object> {
+    return this.http.delete(`${environment.apiUrl}/api/workouts/${workoutId}`);
+  }
 }

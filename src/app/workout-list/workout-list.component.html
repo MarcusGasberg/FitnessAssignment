@@ -1,0 +1,7 @@
+<mat-action-list>
+  <mat-list-item *ngFor="let workout of myWorkouts"
+                 (click)="onSelected(workout)"
+                 [ngClass]="workout._id == selectedWorkoutId ? 'active' : 'non-active'">
+    <h3 matLine>{{ workout.name }}</h3>
+  </mat-list-item>
+</mat-action-list>

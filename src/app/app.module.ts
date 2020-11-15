@@ -33,6 +33,9 @@ import { SaveExerciseDialogComponent } from './save-exercise-dialog/save-exercis
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LogWorkoutDialogComponent } from './log-workout-dialog/log-workout-dialog.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MyWorkoutsComponent } from './my-workouts/my-workouts.component';
+import { WorkoutListComponent } from './workout-list/workout-list.component';
+import { WorkoutDetailsComponent } from './workout-details/workout-details.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     SaveExerciseDialogComponent,
     ConfirmDialogComponent,
     LogWorkoutDialogComponent,
+    MyWorkoutsComponent,
+    WorkoutListComponent,
+    WorkoutDetailsComponent,
   ],
   imports: [
     BrowserModule,
