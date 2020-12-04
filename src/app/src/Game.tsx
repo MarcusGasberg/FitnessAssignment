@@ -1,29 +1,54 @@
 import { Component } from "react";
-import { Dial } from "./Dial";
-import "./Game.css";
+import { Grid } from "./Grid";
+import { Button, Container } from "reactstrap";
 
 export interface IState {
   gridSize: number;
   score: number;
+  isPlaying: boolean;
+  grid: Grid;
+  sequence: number[];
 }
 
-export class Game extends Component<{}, IState> {
-  constructor(props: any) {
+export interface IProps {
+  isPlaying: boolean;
+  score: number;
+  gridSize: number;
+}
+
+export class Game extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
-      gridSize: 3,
-      score: 0,
+      gridSize: props.gridSize,
+      score: props.score,
+      isPlaying: props.isPlaying,
+      grid: new Grid({ gridSize: props.gridSize }),
+      sequence: [],
     };
   }
 
   render() {
     return (
-      <div className="App-dials">
-        <Dial gridSize={this.state.gridSize}></Dial>
-        <Dial gridSize={this.state.gridSize}></Dial>
-      </div>
+      <Container>
+        <Grid key="grid" gridSize={this.state.gridSize}></Grid>
+        <Button color="primary" onClick={this.onGuessPosition}>
+          Position
+        </Button>
+        <Button color="primary" onClick={this.onGuessPosition}>
+          Sound
+        </Button>
+      </Container>
     );
+  }
+
+  onGuessPosition() {
+    console.log("Position Guess");
+  }
+
+  onGuessSound() {
+    console.log("Position Guess");
   }
 }
 
