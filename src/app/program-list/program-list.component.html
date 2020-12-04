@@ -1,7 +1,0 @@
-<mat-action-list>
-  <mat-list-item *ngFor="let program of myPrograms"
-                 (click)="onSelected(program)"
-                 [ngClass]="program._id == selectedProgramId ? 'active' : 'non-active'">
-    <h3 matLine>{{ program.name }}</h3>
-  </mat-list-item>
-</mat-action-list>
