@@ -7,6 +7,7 @@ var logger = require("morgan");
 var cors = require("cors");
 
 var usersRouter = require("./routes/users");
+var highscoresRouter = require("./routes/highscores");
 var mongoose = require("mongoose");
 var db = require("./models/dual-n-back-db");
 var partials = require("express-partials");
@@ -50,6 +51,7 @@ app.use(async function (req, res, next) {
 });
 
 app.use("/api/users", usersRouter);
+app.use("/api/highscores", highscoresRouter);
 
 app.use(express.static(path.join(__dirname, "../app/build")));
 
