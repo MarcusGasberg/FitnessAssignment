@@ -2,25 +2,35 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Game from "./Game";
-import { Button } from "reactstrap";
+import GameControls from "./GameControls";
+import { GameLogic } from "./GameLogic";
 
 export interface IState {
   gridSize: number;
   score: number;
   isPlaying: boolean;
+  gameLogic: GameLogic;
 }
 
 class App extends React.Component<{}, IState> {
   constructor(props: any) {
     super(props);
+    const gridSize = 2;
+    const gameLogic = new GameLogic(gridSize, gridSize);
+
     this.state = {
-      gridSize: 3,
+      gridSize,
       score: 0,
       isPlaying: false,
+      gameLogic,
     };
 
-    this.onPlay = this.onPlay.bind(this);
+    gameLogic.getScore().subscribe((score) => this.setState({ score }));
+
+    this.onGuessPosition = this.onGuessPosition.bind(this);
+    this.onGuessSound = this.onGuessSound.bind(this);
     this.onPause = this.onPause.bind(this);
+    this.onPlay = this.onPlay.bind(this);
   }
 
   render() {
@@ -30,38 +40,42 @@ class App extends React.Component<{}, IState> {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Dual-n-Back</h1>
         </header>
+        <h2>Score: {this.state.score}</h2>
         <Game
           gridSize={this.state.gridSize}
           score={this.state.score}
           isPlaying={this.state.isPlaying}
+          speedMs={2000}
+          gameLogic={this.state.gameLogic}
         ></Game>
-        <Button
-          color="primary"
-          className={this.state.isPlaying ? "hidden" : ""}
-          onClick={this.onPlay}
-        >
-          Play
-        </Button>
-        <Button
-          color="primary"
-          className={!this.state.isPlaying ? "hidden" : ""}
-          onClick={this.onPause}
-        >
-          Pause
-        </Button>
+        <GameControls
+          isPlaying={this.state.isPlaying}
+          guessPosition={this.onGuessPosition}
+          guessSound={this.onGuessSound}
+          play={this.onPlay}
+          pause={this.onPause}
+        ></GameControls>
       </div>
     );
   }
 
-  private onPlay() {
-    console.log("Playing");
-    this.setState({ isPlaying: true });
+  private onScoreChange(score: number) {
+    console.log(score);
   }
 
   private onPause() {
-    console.log("Pausing");
     this.setState({ isPlaying: false });
   }
+
+  private onPlay() {
+    this.setState({ isPlaying: true });
+  }
+
+  private onGuessPosition() {
+    this.state.gameLogic.guessPosition();
+  }
+
+  private onGuessSound() {}
 }
 
 export default App;

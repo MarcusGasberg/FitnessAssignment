@@ -1,19 +1,21 @@
 import { Component } from "react";
 import { Grid } from "./Grid";
-import { Button, Container } from "reactstrap";
+import { Container } from "reactstrap";
+import { Subscription } from "rxjs";
+import { NBack, GameLogic } from "./GameLogic";
 
 export interface IState {
-  gridSize: number;
   score: number;
-  isPlaying: boolean;
-  grid: Grid;
-  sequence: number[];
+  nback: NBack;
+  subs: Subscription;
 }
 
 export interface IProps {
   isPlaying: boolean;
   score: number;
   gridSize: number;
+  speedMs: number;
+  gameLogic: GameLogic;
 }
 
 export class Game extends Component<IProps, IState> {
@@ -21,34 +23,36 @@ export class Game extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      gridSize: props.gridSize,
-      score: props.score,
-      isPlaying: props.isPlaying,
-      grid: new Grid({ gridSize: props.gridSize }),
-      sequence: [],
+      nback: { position: { row: -1, col: -1 }, sound: -1 },
+      score: 0,
+      subs: new Subscription(),
     };
   }
 
   render() {
     return (
       <Container>
-        <Grid key="grid" gridSize={this.state.gridSize}></Grid>
-        <Button color="primary" onClick={this.onGuessPosition}>
-          Position
-        </Button>
-        <Button color="primary" onClick={this.onGuessPosition}>
-          Sound
-        </Button>
+        <Grid
+          key="grid"
+          gridSize={this.props.gridSize}
+          nback={this.state.nback}
+        ></Grid>
       </Container>
     );
   }
 
-  onGuessPosition() {
-    console.log("Position Guess");
-  }
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (!prevProps.isPlaying && this.props.isPlaying) {
+      this.setState({
+        subs: this.props.gameLogic.subscribeToSequence((nback: NBack) => {
+          this.setState({ nback });
+        }),
+      });
+    }
 
-  onGuessSound() {
-    console.log("Position Guess");
+    if (prevProps.isPlaying && !this.props.isPlaying) {
+      this.state.subs.unsubscribe();
+    }
   }
 }
 

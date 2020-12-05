@@ -3,14 +3,15 @@ import { Container, Row, Col } from "reactstrap";
 import GridTile from "./GridTile";
 import { range } from "./Utils";
 import "./Grid.css";
+import { NBack } from "./GameLogic";
 
 export interface IState {
-  gridSize: number;
   flashDurationMs: number;
 }
 
 export interface IProps {
   gridSize: number;
+  nback: NBack;
 }
 
 export class Grid extends Component<IProps, IState> {
@@ -18,22 +19,28 @@ export class Grid extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      gridSize: props.gridSize,
-      flashDurationMs: 1000,
+      flashDurationMs: 500,
     };
   }
 
   render() {
     return (
       <Container>
-        {range(0, this.state.gridSize - 1).map((i) => (
+        {range(0, this.props.gridSize - 1).map((i) => (
           <Row key={"row" + i} style={{ border: "1rem none black" }}>
-            {range(0, this.state.gridSize - 1).map((j) => (
+            {range(0, this.props.gridSize - 1).map((j) => (
               <Col
-                key={i * this.state.gridSize + j}
+                key={i * this.props.gridSize + j}
                 className="border border-dark"
               >
-                <GridTile flash={true}></GridTile>
+                <GridTile
+                  key={"gt" + i * this.props.gridSize + j}
+                  flash={
+                    i === this.props.nback.position.col &&
+                    j === this.props.nback.position.row
+                  }
+                  flashDuration={this.state.flashDurationMs}
+                ></GridTile>
               </Col>
             ))}
           </Row>
@@ -42,7 +49,7 @@ export class Grid extends Component<IProps, IState> {
     );
   }
 
-  doFlash(num: number) {}
+  componentDidUpdate(prevProps: IProps, prevState: IState) {}
 }
 
 export default Grid;
