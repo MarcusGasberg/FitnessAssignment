@@ -6,7 +6,8 @@ import GameControls from "./GameControls";
 import { GameLogic } from "./GameLogic";
 
 export interface IState {
-  gridSize: number;
+  rows: number;
+  cols: number;
   score: number;
   isPlaying: boolean;
   gameLogic: GameLogic;
@@ -15,11 +16,13 @@ export interface IState {
 class App extends React.Component<{}, IState> {
   constructor(props: any) {
     super(props);
-    const gridSize = 2;
-    const gameLogic = new GameLogic(gridSize, gridSize);
+    const rows = 2;
+    const cols = 2;
+    const gameLogic = new GameLogic(rows, cols);
 
     this.state = {
-      gridSize,
+      rows,
+      cols,
       score: 0,
       isPlaying: false,
       gameLogic,
@@ -42,7 +45,8 @@ class App extends React.Component<{}, IState> {
         </header>
         <h2>Score: {this.state.score}</h2>
         <Game
-          gridSize={this.state.gridSize}
+          rows={this.state.rows}
+          cols={this.state.cols}
           score={this.state.score}
           isPlaying={this.state.isPlaying}
           speedMs={2000}
@@ -57,10 +61,6 @@ class App extends React.Component<{}, IState> {
         ></GameControls>
       </div>
     );
-  }
-
-  private onScoreChange(score: number) {
-    console.log(score);
   }
 
   private onPause() {

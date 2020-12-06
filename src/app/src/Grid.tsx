@@ -10,8 +10,10 @@ export interface IState {
 }
 
 export interface IProps {
-  gridSize: number;
+  rows: number;
+  cols: number;
   nback: NBack;
+  isPlaying: boolean;
 }
 
 export class Grid extends Component<IProps, IState> {
@@ -26,18 +28,19 @@ export class Grid extends Component<IProps, IState> {
   render() {
     return (
       <Container>
-        {range(0, this.props.gridSize - 1).map((i) => (
+        {range(0, this.props.rows - 1).map((i) => (
           <Row key={"row" + i} style={{ border: "1rem none black" }}>
-            {range(0, this.props.gridSize - 1).map((j) => (
+            {range(0, this.props.cols - 1).map((j) => (
               <Col
-                key={i * this.props.gridSize + j}
+                key={i * (this.props.rows * this.props.cols) + j}
                 className="border border-dark"
               >
                 <GridTile
-                  key={"gt" + i * this.props.gridSize + j}
+                  key={"gt" + i * (this.props.rows * this.props.cols) + j}
                   flash={
                     i === this.props.nback.position.col &&
-                    j === this.props.nback.position.row
+                    j === this.props.nback.position.row &&
+                    this.props.isPlaying
                   }
                   flashDuration={this.state.flashDurationMs}
                 ></GridTile>
@@ -48,8 +51,6 @@ export class Grid extends Component<IProps, IState> {
       </Container>
     );
   }
-
-  componentDidUpdate(prevProps: IProps, prevState: IState) {}
 }
 
 export default Grid;

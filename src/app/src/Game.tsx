@@ -13,7 +13,8 @@ export interface IState {
 export interface IProps {
   isPlaying: boolean;
   score: number;
-  gridSize: number;
+  rows: number;
+  cols: number;
   speedMs: number;
   gameLogic: GameLogic;
 }
@@ -34,8 +35,10 @@ export class Game extends Component<IProps, IState> {
       <Container>
         <Grid
           key="grid"
-          gridSize={this.props.gridSize}
+          rows={this.props.rows}
+          cols={this.props.cols}
           nback={this.state.nback}
+          isPlaying={this.props.isPlaying}
         ></Grid>
       </Container>
     );
@@ -53,6 +56,12 @@ export class Game extends Component<IProps, IState> {
     if (prevProps.isPlaying && !this.props.isPlaying) {
       this.state.subs.unsubscribe();
     }
+  }
+
+  public static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+    const nextState: Partial<IState> = { nback: prevState.nback };
+
+    return nextState;
   }
 }
 
