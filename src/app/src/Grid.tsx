@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import GridTile from "./GridTile";
 import { range } from "./Utils";
