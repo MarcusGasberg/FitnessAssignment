@@ -1,13 +1,15 @@
 import React, { Component } from "react";
+import { NBack } from "./GameLogic";
 import "./GridTile.css";
 
 export interface IProps {
-  flash: boolean;
+  nback?: NBack;
   flashDuration: number;
+  col: number;
+  row: number;
 }
 
 export interface IState {
-  activeClass: string;
   flashing: boolean;
 }
 
@@ -16,24 +18,22 @@ export class GridTile extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      activeClass: "default",
       flashing: false,
     };
   }
 
   render() {
-    return <div className={this.state.activeClass}></div>;
+    return <div className={this.state.flashing ? "flash" : "default"}></div>;
   }
 
   componentDidUpdate(prevProps: IProps, prevState: IState) {
-    if (
-      prevState.activeClass !== "flash" &&
-      this.props.flash &&
-      !this.state.flashing
-    ) {
-      this.setState({ activeClass: "flash", flashing: true });
+    if (this.props.nback && this.props.nback !== prevProps.nback) {
+      const flashing =
+        this.props.nback.position.col === this.props.col &&
+        this.props.nback.position.row === this.props.row;
+      this.setState({ flashing });
       setTimeout(
-        () => this.setState({ activeClass: "default", flashing: false }),
+        () => this.setState({ flashing: false }),
         this.props.flashDuration
       );
     }

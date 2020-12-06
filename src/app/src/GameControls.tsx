@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
 import "./GameControls.css";
 
@@ -10,17 +10,9 @@ export interface IProps {
   pause: () => void;
 }
 
-export interface IState {
-  isPlaying: boolean;
-}
-
-export class GameControls extends Component<IProps, IState> {
+export class GameControls extends Component<IProps, {}> {
   constructor(props: IProps) {
     super(props);
-
-    this.state = {
-      isPlaying: props.isPlaying,
-    };
 
     this.onPlay = this.onPlay.bind(this);
     this.onPause = this.onPause.bind(this);
@@ -55,7 +47,7 @@ export class GameControls extends Component<IProps, IState> {
           <Col>
             <Button
               color="primary"
-              className={this.state.isPlaying ? "hidden" : ""}
+              className={this.props.isPlaying ? "hidden" : ""}
               style={{ marginLeft: "auto", marginRight: "1rem" }}
               onClick={this.onPlay}
             >
@@ -65,7 +57,7 @@ export class GameControls extends Component<IProps, IState> {
           <Col>
             <Button
               color="primary"
-              className={!this.state.isPlaying ? "hidden" : ""}
+              className={!this.props.isPlaying ? "hidden" : ""}
               style={{ marginRight: "auto", marginLeft: "1rem" }}
               onClick={this.onPause}
             >
@@ -78,11 +70,15 @@ export class GameControls extends Component<IProps, IState> {
   }
 
   private onGuessPosition() {
-    this.props.guessPosition();
+    if (this.props.isPlaying) {
+      this.props.guessPosition();
+    }
   }
 
   private onGuessSound() {
-    this.props.guessSound();
+    if (this.props.isPlaying) {
+      this.props.guessSound();
+    }
   }
 
   private onPlay() {

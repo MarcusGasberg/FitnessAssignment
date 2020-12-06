@@ -12,7 +12,7 @@ export interface IState {
 export interface IProps {
   rows: number;
   cols: number;
-  nback: NBack;
+  nback?: NBack;
   isPlaying: boolean;
 }
 
@@ -37,11 +37,9 @@ export class Grid extends Component<IProps, IState> {
               >
                 <GridTile
                   key={"gt" + i * (this.props.rows * this.props.cols) + j}
-                  flash={
-                    i === this.props.nback.position.col &&
-                    j === this.props.nback.position.row &&
-                    this.props.isPlaying
-                  }
+                  row={i}
+                  col={j}
+                  nback={this.props.nback}
                   flashDuration={this.state.flashDurationMs}
                 ></GridTile>
               </Col>

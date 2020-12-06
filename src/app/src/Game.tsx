@@ -6,8 +6,7 @@ import { NBack, GameLogic } from "./GameLogic";
 import React from "react";
 
 export interface IState {
-  score: number;
-  nback: NBack;
+  nback?: NBack;
   subs: Subscription;
 }
 
@@ -25,8 +24,6 @@ export class Game extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      nback: { position: { row: -1, col: -1 }, sound: -1 },
-      score: 0,
       subs: new Subscription(),
     };
   }
@@ -34,6 +31,7 @@ export class Game extends Component<IProps, IState> {
   render() {
     return (
       <Container>
+        <h2>Score: {this.props.score}</h2>
         <Grid
           key="grid"
           rows={this.props.rows}
@@ -50,6 +48,7 @@ export class Game extends Component<IProps, IState> {
       this.setState({
         subs: this.props.gameLogic.subscribeToSequence((nback: NBack) => {
           this.setState({ nback });
+          this.speak(nback.sound.toString());
         }),
       });
     }
@@ -59,8 +58,29 @@ export class Game extends Component<IProps, IState> {
     }
   }
 
+  componentWillUnmount() {
+    this.state.subs.unsubscribe();
+  }
+
+  private speak(text: string) {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance();
+      utterance.text = text;
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.voice = speechSynthesis.getVoices().filter((voice) => {
+        return voice.name === "Allison";
+      })[0];
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
   public static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
-    const nextState: Partial<IState> = { nback: prevState.nback };
+    const nextState: Partial<IState> = {
+      nback: prevState.nback,
+      subs: prevState.subs,
+    };
 
     return nextState;
   }

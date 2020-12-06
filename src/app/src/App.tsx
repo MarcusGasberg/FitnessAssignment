@@ -4,6 +4,7 @@ import "./App.css";
 import Game from "./Game";
 import GameControls from "./GameControls";
 import { GameLogic } from "./GameLogic";
+import { Subscription } from "rxjs";
 
 export interface IState {
   rows: number;
@@ -11,14 +12,21 @@ export interface IState {
   score: number;
   isPlaying: boolean;
   gameLogic: GameLogic;
+  sub: Subscription;
+  sequenceInterval: number;
 }
 
 class App extends React.Component<{}, IState> {
   constructor(props: any) {
     super(props);
-    const rows = 2;
-    const cols = 2;
-    const gameLogic = new GameLogic(rows, cols);
+    const rows = 3;
+    const cols = 3;
+    const sequenceInterval = 3000;
+    const gameLogic = new GameLogic(rows, cols, sequenceInterval);
+
+    const sub = gameLogic.getScore().subscribe((score) => {
+      this.setState({ score });
+    });
 
     this.state = {
       rows,
@@ -26,9 +34,9 @@ class App extends React.Component<{}, IState> {
       score: 0,
       isPlaying: false,
       gameLogic,
+      sub,
+      sequenceInterval,
     };
-
-    gameLogic.getScore().subscribe((score) => this.setState({ score }));
 
     this.onGuessPosition = this.onGuessPosition.bind(this);
     this.onGuessSound = this.onGuessSound.bind(this);
@@ -43,13 +51,12 @@ class App extends React.Component<{}, IState> {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Dual-n-Back</h1>
         </header>
-        <h2>Score: {this.state.score}</h2>
         <Game
           rows={this.state.rows}
           cols={this.state.cols}
           score={this.state.score}
           isPlaying={this.state.isPlaying}
-          speedMs={2000}
+          speedMs={10000}
           gameLogic={this.state.gameLogic}
         ></Game>
         <GameControls
@@ -75,7 +82,9 @@ class App extends React.Component<{}, IState> {
     this.state.gameLogic.guessPosition();
   }
 
-  private onGuessSound() {}
+  private onGuessSound() {
+    this.state.gameLogic.guessPosition();
+  }
 }
 
 export default App;
