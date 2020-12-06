@@ -37,12 +37,7 @@ export class GameLogic {
 
     const currScore = this._score$.getValue();
 
-    if (
-      _.isEqual(
-        this.history[this.history.length - 1].position,
-        this.history[this.history.length - 2].position
-      )
-    ) {
+    if (this.isPreviousTwoSame((nb: NBack) => nb.position)) {
       this._score$.next(currScore + this.correctAnswer);
     } else {
       this._score$.next(currScore + this.wrongAnswer);
@@ -57,12 +52,7 @@ export class GameLogic {
 
     const currScore = this._score$.getValue();
 
-    if (
-      _.isEqual(
-        this.history[this.history.length - 1].sound,
-        this.history[this.history.length - 2].sound
-      )
-    ) {
+    if (this.isPreviousTwoSame((nb: NBack) => nb.sound)) {
       this._score$.next(currScore + this.correctAnswer);
     } else {
       this._score$.next(currScore + this.wrongAnswer);
@@ -77,16 +67,18 @@ export class GameLogic {
   }
 
   createNBack(): NBack {
-    let position = this.isNextSame()
+    const samePosition = this.isNextSame();
+    let position = samePosition
       ? this.history[this.history.length - 1].position
       : {
           row: this.getRandomInt(0, this.rows),
           col: this.getRandomInt(0, this.cols),
         };
 
-    let sound = this.isNextSame()
-      ? this.history[this.history.length - 1].sound
-      : this.getRandomInt(0, 9);
+    let sound =
+      !samePosition && this.isNextSame()
+        ? this.history[this.history.length - 1].sound
+        : this.getRandomInt(0, 9);
 
     const nback = {
       position,
@@ -103,7 +95,7 @@ export class GameLogic {
     return this.getRandomInt(0, 100) <= this.probSamePct;
   }
 
-  isPreviousTwoSame(prop: (nback: NBack) => number): boolean {
+  isPreviousTwoSame(prop: (nback: NBack) => any): boolean {
     const last = prop(this.history[this.history.length - 1]);
     const secondToLast = prop(this.history[this.history.length - 2]);
     return _.isEqual(last, secondToLast);
