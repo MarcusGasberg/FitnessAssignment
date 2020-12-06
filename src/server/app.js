@@ -9,7 +9,7 @@ var cors = require("cors");
 var usersRouter = require("./routes/users");
 var highscoresRouter = require("./routes/highscores");
 var mongoose = require("mongoose");
-var db = require("./models/dual-n-back-db");
+require("./models/dual-n-back-db");
 var partials = require("express-partials");
 var jwt = require("jsonwebtoken");
 
@@ -17,7 +17,6 @@ partials.register(".ejs", "ejs");
 
 var app = express();
 
-// Create link to Angular build directory
 var distDir = path.join(__dirname, "../../dist/");
 app.use(express.static(distDir));
 

@@ -1,9 +1,10 @@
 const Highscore = require("../models/highscore");
 
-function list(req, res) {
+function listTop10(req, res) {
     Highscore
         .find({})
         .sort({rank: 1})
+        .limit(10)
         .exec((err, result) => {
             if (err) {
                 return res.status(400).json(err);
@@ -24,7 +25,7 @@ async function create(req, res) {
         .find({score: {$gte: score}})
         .countDocuments((err) => {
             if (err) {
-                return res.status(400).json({message: err.message});
+                handleBadRequest(res, err);
             }
         });
     let newRank = count + 1;
@@ -35,23 +36,30 @@ async function create(req, res) {
     });
     await newHighscore.save((err) => {
         if (err) {
-            return res.status(400).json({message: err.message});
+            handleBadRequest(res, err);
         } else {
             Highscore.updateMany(
                 {score: {$lt: score}},
                 {$inc: {rank: 1}},
                 (err) => {
                     if (err) {
-                        return res.status(400).json({message: err.message});
+                        handleBadRequest(res, err);
                     }
                 }
             );
         }
     });
+    if (newRank <= 10) {
+        //res.ws.clients.forEach(client => client.send("Top 10 changed"));
+    }
     return res.status(201).json(newRank);
 }
 
+function handleBadRequest(res, err) {
+    return res.status(400).json({message: err.message});
+}
+
 module.exports = {
-    list: list,
+    listTop10: listTop10,
     create: create
 };
