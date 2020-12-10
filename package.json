@@ -22,11 +22,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.7",
     "morgan": "~1.9.1",
-    "ws": "^7.4.1"
+    "socket.io": "^3.0.4"
   },
   "devDependencies": {
     "@types/node": "^12.11.1",
-    "@types/ws": "^7.4.0",
     "codelyzer": "^6.0.0",
     "mongodb": "^3.6.3",
     "protractor": "~7.0.0"

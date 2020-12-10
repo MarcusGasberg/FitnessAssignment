@@ -1,6 +1,6 @@
 const Highscore = require("../models/highscore");
 
-function listTop10(req, res) {
+function listTopTen(req, res) {
     Highscore
         .find({})
         .sort({rank: 1})
@@ -49,9 +49,6 @@ async function create(req, res) {
             );
         }
     });
-    if (newRank <= 10) {
-        //res.ws.clients.forEach(client => client.send("Top 10 changed"));
-    }
     return res.status(201).json(newRank);
 }
 
@@ -60,6 +57,6 @@ function handleBadRequest(res, err) {
 }
 
 module.exports = {
-    listTop10: listTop10,
+    listTopTen: listTopTen,
     create: create
 };
