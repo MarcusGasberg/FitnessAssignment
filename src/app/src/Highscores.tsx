@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import io from 'socket.io-client';
+import {HighscoreList} from "./HighscoreList";
 
 export interface IProps {
     username: string,
@@ -85,17 +86,13 @@ export class Highscores extends Component<IProps, IState> {
     render() {
         return (
             <div className="Highscores"
-                 style={{ marginLeft: "2rem", marginTop: "2rem" }}>
+                 style={{marginLeft: "2rem", marginTop: "2rem"}}>
+                <HighscoreList highscores={this.state.highscoresData}/>
                 <button onClick={() => {
                     this.onNewHighscore();
                 }}>
-                    New highscore
+                    New highscore tester
                 </button>
-                <ul>
-                    {this.state.highscoresData.map(highscore => {
-                        return <li key={highscore._id}>{`${highscore.rank}. ${highscore.name}, ${highscore.score}`}</li>
-                    })}
-                </ul>
             </div>
         );
     }
