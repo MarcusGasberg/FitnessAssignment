@@ -3,7 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import GridTile from "./GridTile";
 import { range } from "../Utils";
 import "./Grid.css";
-import { NBack } from "./GameLogic";
+import { NBack } from "../store/GameState";
 
 export interface IState {
   flashDurationMs: number;

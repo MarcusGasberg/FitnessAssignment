@@ -1,8 +1,14 @@
 import { Component } from "react";
 import { Grid } from "./Grid";
 import { Container } from "reactstrap";
-import { Subscription } from "rxjs";
-import { NBack, GameLogic } from "./GameLogic";
+import { interval, Observable, Subscription } from "rxjs";
+import { RootState } from "../reducers/Index";
+import { connect } from "react-redux";
+import { NBack } from "../store/GameState";
+import { createNBack } from "../reducers/GameReducer";
+import { map, tap } from "rxjs/operators";
+import { ADD_NBACK } from "../constants/GameTypes";
+import { Redirect } from "react-router-dom";
 
 export interface IState {
   nback?: NBack;
@@ -10,12 +16,14 @@ export interface IState {
 }
 
 export interface IProps {
-  isPlaying: boolean;
   score: number;
+  isPlaying: boolean;
   rows: number;
   cols: number;
   speedMs: number;
-  gameLogic: GameLogic;
+  sequenceGenerator: Observable<NBack>;
+  newNBack: (nback: NBack) => void;
+  authenticated: boolean;
 }
 
 export class Game extends Component<IProps, IState> {
@@ -28,6 +36,10 @@ export class Game extends Component<IProps, IState> {
   }
 
   render() {
+    if (!this.props.authenticated) {
+      return <Redirect to="/login" />;
+    }
+
     return (
       <Container>
         <h2>Score: {this.props.score}</h2>
@@ -45,9 +57,10 @@ export class Game extends Component<IProps, IState> {
   componentDidUpdate(prevProps: IProps, prevState: IState) {
     if (!prevProps.isPlaying && this.props.isPlaying) {
       this.setState({
-        subs: this.props.gameLogic.subscribeToSequence((nback: NBack) => {
+        subs: this.props.sequenceGenerator.subscribe((nback: NBack) => {
           this.setState({ nback });
           this.speak(nback.sound.toString());
+          this.props.newNBack(nback);
         }),
       });
     }
@@ -85,4 +98,21 @@ export class Game extends Component<IProps, IState> {
   }
 }
 
-export default Game;
+const mapStateToProps = (state: RootState) =>
+  ({
+    score: state.game.currentScore,
+    cols: state.game.cols,
+    isPlaying: state.game.isPlaying,
+    rows: state.game.rows,
+    speedMs: state.game.speedMs,
+    sequenceGenerator: interval(state.game.speedMs).pipe(
+      map(() => createNBack(state.game))
+    ),
+    authenticated: !!state.session.user?.token,
+  } as IProps);
+
+const mapDispatchToProps = {
+  newNBack: (nback: NBack) => ({ type: ADD_NBACK, payload: nback }),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

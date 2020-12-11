@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NBack } from "./GameLogic";
+import { NBack } from "../store/GameState";
 import "./GridTile.css";
 
 export interface IProps {

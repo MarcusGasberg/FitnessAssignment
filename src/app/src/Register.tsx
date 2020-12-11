@@ -3,29 +3,32 @@ import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
 import { connect } from "react-redux";
 import { RootState } from "./reducers/Index";
-import { thunkLogin } from "./actions/SessionActions";
-import { ThunkAction } from "redux-thunk";
-import { Action } from "redux";
+import { thunkRegister } from "./actions/SessionActions";
+import { User } from "./store/User";
 import { Redirect } from "react-router-dom";
 
 export interface IState {
   username: string;
   password: string;
-  redirectTo: string;
+  email: string;
+  fullname: string;
   error: string;
+  redirectTo: string;
 }
 
 export interface IProps {
-  login: (username: string, password: string) => any;
+  register: (user: Partial<User>) => any;
 }
 
-class Login extends Component<IProps, IState> {
+class Register extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
     this.state = {
       username: "",
       password: "",
+      email: "",
+      fullname: "",
       error: "",
       redirectTo: "",
     };
@@ -40,14 +43,31 @@ class Login extends Component<IProps, IState> {
     }
 
     return (
-      <div className="App-Login" style={{ margin: "2rem 20rem" }}>
+      <div className="App-Register" style={{ margin: "2rem 20rem" }}>
         <Form onSubmit={this.onSubmit}>
-          <FormGroup>
+          <FormGroup key="username">
             <Label>Username</Label>
             <Input
               autoFocus
               value={this.state.username}
               onChange={(e) => this.setState({ username: e.target.value })}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Email</Label>
+            <Input
+              autoFocus
+              type="email"
+              value={this.state.email}
+              onChange={(e) => this.setState({ email: e.target.value })}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Email</Label>
+            <Input
+              autoFocus
+              value={this.state.fullname}
+              onChange={(e) => this.setState({ fullname: e.target.value })}
             />
           </FormGroup>
           <FormGroup>
@@ -59,26 +79,19 @@ class Login extends Component<IProps, IState> {
             />
           </FormGroup>
           <Button block size="lg" type="submit" disabled={!this.validateForm()}>
-            Login
+            Register
           </Button>
+          <div>{this.state.error}</div>
         </Form>
         <Button
           style={{ marginTop: "1rem" }}
           block
           size="lg"
-          onClick={() => this.redirectTo("/register")}
+          onClick={() => this.redirectTo("/login")}
         >
-          Or Register
+          Or Login
         </Button>
       </div>
-    );
-  }
-
-  onSubmit(event: any): void {
-    event.preventDefault();
-    this.props.login(this.state.username, this.state.password).then(
-      () => this.redirectTo("/home"),
-      (err: Error) => this.setState({ error: err.message })
     );
   }
 
@@ -86,15 +99,34 @@ class Login extends Component<IProps, IState> {
     this.setState({ redirectTo: path });
   }
 
+  onSubmit(event: any): void {
+    event.preventDefault();
+    this.props
+      .register({
+        username: this.state.username,
+        password: this.state.password,
+        email: this.state.email,
+        fullname: this.state.fullname,
+      })
+      .then(
+        () => this.redirectTo("/home"),
+        (err: Error) => this.setState({ error: err.message })
+      );
+  }
+
   private validateForm() {
-    return this.state.username.length > 0 && this.state.password.length > 0;
+    return (
+      this.state.username.length > 0 &&
+      this.state.password.length > 0 &&
+      this.state.email.length > 0
+    );
   }
 }
 
 const mapStateToProps = (state: RootState) => ({});
 
 const mapDispatchToProps = {
-  login: thunkLogin,
+  register: thunkRegister,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
