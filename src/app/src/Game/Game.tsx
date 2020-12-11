@@ -3,7 +3,6 @@ import { Grid } from "./Grid";
 import { Container } from "reactstrap";
 import { Subscription } from "rxjs";
 import { NBack, GameLogic } from "./GameLogic";
-import React from "react";
 
 export interface IState {
   nback?: NBack;

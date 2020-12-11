@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import GridTile from "./GridTile";
-import { range } from "./Utils";
+import { range } from "../Utils";
 import "./Grid.css";
 import { NBack } from "./GameLogic";
 

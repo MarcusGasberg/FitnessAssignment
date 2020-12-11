@@ -1,10 +1,12 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Game from "./Game";
-import GameControls from "./GameControls";
-import { GameLogic } from "./GameLogic";
+import Game from "./Game/Game";
+import GameControls from "./Game/GameControls";
+import { GameLogic } from "./Game/GameLogic";
 import { Subscription } from "rxjs";
+import { Switch, Route, Link, Router, BrowserRouter } from "react-router-dom";
+import Login from "./Login";
 
 export interface IState {
   rows: number;
@@ -21,7 +23,7 @@ class App extends React.Component<{}, IState> {
     super(props);
     const rows = 3;
     const cols = 3;
-    const sequenceInterval = 3000;
+    const sequenceInterval = 2500;
     const gameLogic = new GameLogic(rows, cols, sequenceInterval);
 
     const sub = gameLogic.getScore().subscribe((score) => {
@@ -46,27 +48,36 @@ class App extends React.Component<{}, IState> {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Dual-n-Back</h1>
-        </header>
-        <Game
-          rows={this.state.rows}
-          cols={this.state.cols}
-          score={this.state.score}
-          isPlaying={this.state.isPlaying}
-          speedMs={10000}
-          gameLogic={this.state.gameLogic}
-        ></Game>
-        <GameControls
-          isPlaying={this.state.isPlaying}
-          guessPosition={this.onGuessPosition}
-          guessSound={this.onGuessSound}
-          play={this.onPlay}
-          pause={this.onPause}
-        ></GameControls>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Welcome to Dual-n-Back</h1>
+          </header>
+          <Switch>
+            <Route path="/login">
+              <Login></Login>
+            </Route>
+            <Route path="/game">
+              <Game
+                rows={this.state.rows}
+                cols={this.state.cols}
+                score={this.state.score}
+                isPlaying={this.state.isPlaying}
+                speedMs={10000}
+                gameLogic={this.state.gameLogic}
+              ></Game>
+              <GameControls
+                isPlaying={this.state.isPlaying}
+                guessPosition={this.onGuessPosition}
+                guessSound={this.onGuessSound}
+                play={this.onPlay}
+                pause={this.onPause}
+              ></GameControls>
+            </Route>
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
 
