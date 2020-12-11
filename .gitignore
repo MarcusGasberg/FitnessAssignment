@@ -28,7 +28,7 @@
 **/npm-debug.log*
 **/yarn-debug.log*
 **/yarn-error.log*
-**/.eslintcache
+src/app/.eslintcache
 
 # profiling files
 chrome-profiler-events*.json
