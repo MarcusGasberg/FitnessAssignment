@@ -11,7 +11,7 @@ router.post("/sign-out", function (req, res, next) {
   res.redirect("/");
 });
 
-router.post("/authenticate", async function (req, res, next) {
+router.post("/sign-in", async function (req, res, next) {
   if (!req.body.username || !req.body.password) {
     res.status(400).json({ message: "Username and Password are required" });
     return;
@@ -26,7 +26,7 @@ router.post("/authenticate", async function (req, res, next) {
     if (valid) {
       const token = u.generateJwt();
       res.cookie("jwt", token, { secure: true, httpOnly: true });
-      res.status(200).json(u);
+      res.status(200).json({ ...u.toObject(), token });
       return;
     }
   }

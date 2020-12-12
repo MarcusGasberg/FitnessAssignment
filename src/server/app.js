@@ -1,4 +1,7 @@
 require("dotenv").config();
+require("./models/user");
+require("./models/highscore");
+
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");

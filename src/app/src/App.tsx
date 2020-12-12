@@ -6,11 +6,10 @@ import GameControls from "./Game/GameControls";
 import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 import Login from "./Login";
 import { Row } from "reactstrap";
-import { Highscores } from "./Highscores";
-import { environment } from "./environments/environment";
 import { Provider } from "react-redux";
 import store from "./store/ConfigureStore";
 import Register from "./Register";
+import Highscores from "./Highscores";
 class App extends React.Component {
   render() {
     const userFullName = store.getState().session.user?.fullname;
@@ -29,22 +28,17 @@ class App extends React.Component {
             </header>
             <Switch>
               <Route path="/login">
-                <Login></Login>
+                <Login />
               </Route>
               <Route path="/register">
-                <Register></Register>
+                <Register />
               </Route>
               <Route path="/home">
                 <Row>
-                  <Highscores
-                    username={"tester"}
-                    score={100}
-                    baseUrl={environment.apiUrl}
-                    apiUrl={`${environment.apiUrl}/api/highscores`}
-                  />
+                  <Highscores />
                 </Row>
                 <Game></Game>
-                <GameControls></GameControls>
+                <GameControls />
               </Route>
               <Route exact path="/">
                 <Redirect to="/home" />
