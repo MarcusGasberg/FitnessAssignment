@@ -14,14 +14,11 @@ const UserSchema = new Schema({
     unique: true,
     required: true,
   },
-  fullname: {
-    type: String,
-    required: true,
-  },
+  fullname: String,
   username: {
     type: String,
     unique: true,
-    required: true
+    required: true,
   },
   hash: String,
   salt: String,
