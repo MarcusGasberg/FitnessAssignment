@@ -1,36 +1,18 @@
-import { HighScore } from "../store/HighScoreState";
+import {HighScoreState} from "../store/HighScoreState";
 
-export const SEND_HIGHSCORE = "SEND_HIGHSCORE";
-export const GET_MY_HIGHSCORE = "GET_MY_HIGHSCORE";
-export const UPDATE_HIGHSCORE = "UPDATE_HIGHSCORE";
-export const DELETE_HIGHSCORE = "DELETE_HIGHSCORE";
+export const GET_HIGHSCORES = "GET_HIGHSCORES";
+export const NEW_HIGHSCORE = "NEW_HIGHSCORE";
 
-interface SendHighScoreAction {
-  type: typeof SEND_HIGHSCORE;
-  payload: HighScore;
+interface GetHighScoresAction {
+    type: typeof GET_HIGHSCORES;
+    payload: HighScoreState;
 }
 
-interface GetMyHighScoreAction {
-  type: typeof GET_MY_HIGHSCORE;
-  meta: {
-    name: string;
-  };
-}
-
-interface UpdateHighScoreAction {
-  type: typeof UPDATE_HIGHSCORE;
-  payload: HighScore;
-}
-
-interface DeleteHighScoreAction {
-  type: typeof DELETE_HIGHSCORE;
-  meta: {
-    name: string;
-  };
+interface NewHighScoreAction {
+    type: typeof NEW_HIGHSCORE;
 }
 
 export type HighScoreActionTypes =
-  | SendHighScoreAction
-  | DeleteHighScoreAction
-  | UpdateHighScoreAction
-  | GetMyHighScoreAction;
+    | GetHighScoresAction
+    | NewHighScoreAction;
+

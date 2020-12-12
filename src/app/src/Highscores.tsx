@@ -5,24 +5,23 @@ import {HighscoreList} from "./HighscoreList";
 import {connect} from "react-redux";
 import {RootState} from "./reducers/Index";
 import {environment} from "./environments/environment";
+import {thunkGetHighscores, thunkSendHighscore} from "./actions/HighScoreActions";
+import {HighScore} from "./store/HighScoreState";
+import {GET_HIGHSCORES} from "./constants/HighScoreTypes";
 
 export interface IProps {
     username: string;
     score: number;
     token: string;
-}
-
-export interface IHighscore {
-    _id: string;
-    rank: number;
-    name: string;
-    score: number;
+    newHighscore: boolean;
+    highscores: HighScore[];
+    getHighscores: (token: string) => any;
+    sendHighscore: (name: string, score: number, token: string) => any;
+    updateHighscores: (highscores: HighScore[]) => any;
 }
 
 export interface IState {
-    apiUrl: string;
     socket: SocketIOClient.Socket;
-    highscoresData: IHighscore[];
 }
 
 class Highscores extends Component<IProps, IState> {
@@ -32,9 +31,7 @@ class Highscores extends Component<IProps, IState> {
         super(props);
 
         this.state = {
-            apiUrl: `${environment.apiUrl}/api/highscores`,
-            socket: io(environment.apiUrl),
-            highscoresData: [],
+            socket: io(environment.apiUrl)
         };
 
         this.onNewHighscore = this.onNewHighscore.bind(this);
@@ -43,7 +40,7 @@ class Highscores extends Component<IProps, IState> {
 
     componentDidMount() {
         this._isMounted = true;
-        this.getHighscoresData();
+        this.props.getHighscores(this.props.token);
 
         this.state.socket.on(
             "new-remote-highscores",
@@ -59,71 +56,34 @@ class Highscores extends Component<IProps, IState> {
 
     private onNewRemoteHighscores(highscores: string): void {
         let newHighscoresJson = JSON.stringify(highscores);
-        let newHighscoresData: IHighscore[] = JSON.parse(newHighscoresJson);
+        let newHighscoresData: HighScore[] = JSON.parse(newHighscoresJson);
         if (this._isMounted) {
-            this.setState({highscoresData: newHighscoresData});
+            this.props.updateHighscores(newHighscoresData);
         }
     }
 
-    private getHighscoresData(): void {
-        const reqOptions = {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.props.token}`,
-            },
-        };
-
-        fetch(this.state.apiUrl, reqOptions)
-            .then((highscoresData) => {
-                if (highscoresData.ok) {
-                    return highscoresData.json();
-                }
-                return Promise.resolve([]);
-            })
-            .then((highscoresDataJson) => {
-                if (this._isMounted) {
-                    this.setState({highscoresData: highscoresDataJson});
-                }
-            });
-    }
-
     private onNewHighscore(): void {
-        const reqOptions = {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.props.token}`,
-            },
-            body: JSON.stringify({
-                rank: 0,
-                name: this.props.username,
-                score: this.props.score,
-            }),
-        };
-
-        fetch(this.state.apiUrl, reqOptions)
-            .then((response) => response.json())
-            .then((newRank) => {
-                if (newRank <= 10) {
-                    fetch(this.state.apiUrl)
-                        .then((highscoresData) => highscoresData.json())
-                        .then((highscoresDataJson) => {
-                            this.state.socket.emit("new-highscores", {
-                                highscores: highscoresDataJson,
-                            });
-                        });
-                }
-            });
+        this.props.sendHighscore(
+            this.props.username,
+            this.props.score,
+            this.props.token
+        ).then(() => {
+            if (this.props.newHighscore) {
+                this.props.getHighscores(
+                    this.props.token
+                ).then(() => {
+                    this.state.socket.emit("new-highscores", {
+                        highscores: this.props.highscores,
+                    });
+                })
+            }
+        })
     }
 
     render() {
         return (
-            <div
-                className="Highscores"
-                style={{marginLeft: "2rem", marginTop: "2rem"}}
-            >
-                <HighscoreList highscores={this.state.highscoresData}/>
+            <div>
+                <HighscoreList highscores={this.props.highscores}/>
             </div>
         );
     }
@@ -133,8 +93,20 @@ const mapStateToProps = (state: RootState) => ({
     token: state.session.user?.token ?? "",
     username: state.session.user?.username ?? "",
     score: state.game.currentScore,
+    highscores: state.highScore.highScores,
+    newHighscore: state.highScore.newHighScore
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    getHighscores: thunkGetHighscores,
+    sendHighscore: thunkSendHighscore,
+    updateHighscores: (highscores: HighScore[]) => ({
+        type: GET_HIGHSCORES,
+        payload: {
+            newHighScore: false,
+            highScores: highscores
+        }
+    }),
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Highscores);
