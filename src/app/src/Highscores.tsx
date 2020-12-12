@@ -33,7 +33,7 @@ class Highscores extends Component<IProps, IState> {
 
         this.state = {
             apiUrl: `${environment.apiUrl}/api/highscores`,
-            socket: io(environment.apiUrl, {transports: ['websocket']}),
+            socket: io(environment.apiUrl),
             highscoresData: [],
         };
 
@@ -42,6 +42,7 @@ class Highscores extends Component<IProps, IState> {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         this.getHighscoresData();
 
         this.state.socket.on(
@@ -123,13 +124,6 @@ class Highscores extends Component<IProps, IState> {
                 style={{marginLeft: "2rem", marginTop: "2rem"}}
             >
                 <HighscoreList highscores={this.state.highscoresData}/>
-                <button
-                    onClick={() => {
-                        this.onNewHighscore();
-                    }}
-                >
-                    New highscore tester
-                </button>
             </div>
         );
     }
