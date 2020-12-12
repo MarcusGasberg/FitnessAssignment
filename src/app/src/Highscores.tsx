@@ -8,6 +8,7 @@ import {environment} from "./environments/environment";
 import {thunkGetHighscores, thunkSendHighscore} from "./actions/HighScoreActions";
 import {HighScore} from "./store/HighScoreState";
 import {GET_HIGHSCORES} from "./constants/HighScoreTypes";
+import {UPDATE_GAME} from "./constants/GameTypes";
 
 export interface IProps {
     username: string;
@@ -17,7 +18,8 @@ export interface IProps {
     highscores: HighScore[];
     getHighscores: (token: string) => any;
     sendHighscore: (name: string, score: number, token: string) => any;
-    updateHighscores: (highscores: HighScore[]) => any;
+    updateHighscores: (highscores: HighScore[]) => void;
+    resetCurrentScore: () => void;
 }
 
 export interface IState {
@@ -33,7 +35,6 @@ class Highscores extends Component<IProps, IState> {
         this.state = {
             socket: io(environment.apiUrl)
         };
-
         this.onNewHighscore = this.onNewHighscore.bind(this);
         this.onNewRemoteHighscores = this.onNewRemoteHighscores.bind(this);
     }
@@ -68,6 +69,7 @@ class Highscores extends Component<IProps, IState> {
             this.props.score,
             this.props.token
         ).then(() => {
+            this.props.resetCurrentScore();
             if (this.props.newHighscore) {
                 this.props.getHighscores(
                     this.props.token
@@ -83,7 +85,10 @@ class Highscores extends Component<IProps, IState> {
     render() {
         return (
             <div>
-                <HighscoreList highscores={this.props.highscores}/>
+                <HighscoreList
+                    onNewHighScore={this.onNewHighscore}
+                    highscores={this.props.highscores}
+                />
             </div>
         );
     }
@@ -106,6 +111,10 @@ const mapDispatchToProps = {
             newHighScore: false,
             highScores: highscores
         }
+    }),
+    resetCurrentScore: () => ({
+        type: UPDATE_GAME,
+        payload: {currentScore: 0}
     }),
 };
 

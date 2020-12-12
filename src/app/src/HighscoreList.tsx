@@ -1,11 +1,13 @@
 import React from "react";
 import {HighScore} from "./store/HighScoreState";
+import {Button} from "reactstrap";
 
 interface IProps {
-    highscores: HighScore[]
+    onNewHighScore: () => void;
+    highscores: HighScore[];
 }
 
-export const HighscoreList: React.FC<IProps> = ({highscores}) => {
+export const HighscoreList: React.FC<IProps> = ({onNewHighScore, highscores}) => {
 
     return (
         <div style={{marginLeft: "2rem", marginTop: "2rem"}}>
@@ -17,6 +19,13 @@ export const HighscoreList: React.FC<IProps> = ({highscores}) => {
                     </li>
                 })}
             </ol>
+            <Button
+                color="primary"
+                style={{marginLeft: "1rem"}}
+                onClick={onNewHighScore}
+            >
+                Submit score
+            </Button>
         </div>
     );
 }
