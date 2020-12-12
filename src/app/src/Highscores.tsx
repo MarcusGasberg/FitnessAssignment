@@ -22,11 +22,13 @@ export interface IState {
 }
 
 export class Highscores extends Component<IProps, IState> {
+    _isMounted = false;
+
     constructor(props: IProps) {
         super(props);
 
         this.state = {
-            socket: io(this.props.baseUrl),
+            socket: io(this.props.baseUrl, {transports: ['websocket']}),
             highscoresData: [],
         };
 
@@ -35,6 +37,7 @@ export class Highscores extends Component<IProps, IState> {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         this.getHighscoresData();
 
         this.state.socket.on(
@@ -45,17 +48,25 @@ export class Highscores extends Component<IProps, IState> {
         );
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     private onNewRemoteHighscores(highscores: string): void {
         let newHighscoresJson = JSON.stringify(highscores);
         let newHighscoresData: IHighscore[] = JSON.parse(newHighscoresJson);
-        this.setState({highscoresData: newHighscoresData});
+        if (this._isMounted) {
+            this.setState({highscoresData: newHighscoresData});
+        }
     }
 
     private getHighscoresData(): void {
         fetch(this.props.apiUrl)
             .then(highscoresData => highscoresData.json())
             .then(highscoresDataJson => {
-                this.setState({highscoresData: highscoresDataJson});
+                if (this._isMounted) {
+                    this.setState({highscoresData: highscoresDataJson});
+                }
             });
     }
 
