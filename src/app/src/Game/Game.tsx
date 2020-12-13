@@ -78,8 +78,6 @@ export class Game extends Component<IProps, IState> {
     if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance();
       utterance.text = text;
-      utterance.rate = 1;
-      utterance.pitch = 1;
       utterance.voice = speechSynthesis.getVoices().filter((voice) => {
         return voice.name === "Allison";
       })[0];

@@ -63,7 +63,7 @@ class Register extends Component<IProps, IState> {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Email</Label>
+            <Label>Fullname</Label>
             <Input
               autoFocus
               value={this.state.fullname}
