@@ -6,7 +6,7 @@ import { RootState } from "../reducers/Index";
 import { connect } from "react-redux";
 import { NBack } from "../store/GameState";
 import { createNBack } from "../reducers/GameReducer";
-import { map, tap } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { ADD_NBACK } from "../constants/GameTypes";
 import { Redirect } from "react-router-dom";
 

@@ -4,8 +4,6 @@ import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { connect } from "react-redux";
 import { RootState } from "./reducers/Index";
 import { thunkLogin } from "./actions/SessionActions";
-import { ThunkAction } from "redux-thunk";
-import { Action } from "redux";
 import { Redirect } from "react-router-dom";
 
 export interface IState {

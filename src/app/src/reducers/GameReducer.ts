@@ -9,8 +9,8 @@ const probSamePct = 15;
 const initalState: GameState = {
   nBackSequence: [],
   currentScore: 0,
-  cols: 2,
-  rows: 2,
+  cols: 3,
+  rows: 3,
   isPlaying: false,
   speedMs: 2500,
   guessedThisRound: false,

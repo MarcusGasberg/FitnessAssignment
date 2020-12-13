@@ -1,11 +1,6 @@
-import { push } from "react-router-redux";
 import { Action } from "redux";
 import { ThunkAction } from "redux-thunk";
-import {
-  LOGIN_SESSION,
-  SessionActionTypes,
-  UPDATE_SESSION,
-} from "../constants/SessionTypes";
+import { SessionActionTypes, UPDATE_SESSION } from "../constants/SessionTypes";
 import { environment } from "../environments/environment";
 import { RootState } from "../reducers/Index";
 import { SessionState } from "../store/SessionState";
