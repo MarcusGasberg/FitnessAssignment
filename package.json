@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/node": "^12.11.1",
+    "@types/react-router-dom": "^5.1.6",
     "codelyzer": "^6.0.0",
     "mongodb": "^3.6.3",
     "protractor": "~7.0.0"
