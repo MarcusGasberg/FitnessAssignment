@@ -24,7 +24,7 @@ var distDir = path.join(__dirname, "../../dist/");
 app.use(express.static(distDir));
 
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "http://localhost:5000"],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -57,6 +57,9 @@ app.use("/api/highscores", highscoresRouter);
 
 app.use(express.static(path.join(__dirname, "../app/build")));
 
+app.get("/service-worker.js", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "service-worker.js"));
+});
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../app/build", "index.html"));
 });
